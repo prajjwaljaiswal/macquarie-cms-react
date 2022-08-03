@@ -1,0 +1,6 @@
+.max-window-width {
+  max-width: 400px;
+}
+.max-window-height {
+  min-height: 100vh;
+}

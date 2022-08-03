@@ -1,0 +1,71 @@
+{
+  "name": "macquarie-cms",
+  "version": "0.1.0",
+  "homepage": "/sg_cms",
+  "private": true,
+  "dependencies": {
+    "@material-ui/core": "^4.12.2",
+    "@material-ui/data-grid": "^4.0.0-alpha.34",
+    "@material-ui/icons": "^4.11.2",
+    "@material-ui/lab": "^4.0.0-alpha.60",
+    "@reduxjs/toolkit": "^1.6.1",
+    "@testing-library/jest-dom": "^5.11.4",
+    "@testing-library/react": "^11.1.0",
+    "@testing-library/user-event": "^12.1.10",
+    "@types/jest": "^26.0.15",
+    "@types/node": "^12.0.0",
+    "@types/react": "^17.0.0",
+    "@types/react-dom": "^17.0.0",
+    "ckeditor4-react": "^2.0.1",
+    "dayjs": "^1.10.6",
+    "ip": "^1.1.5",
+    "material-ui-dropzone": "^3.5.0",
+    "material-ui-search-bar": "^1.0.0",
+    "public-ip": "^5.0.0",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-hook-form": "^7.12.0",
+    "react-hot-toast": "^2.1.0",
+    "react-public-ip": "^1.0.0",
+    "react-redux": "^7.2.4",
+    "react-router-dom": "^5.2.0",
+    "react-scripts": "4.0.3",
+    "react-select": "^4.3.1",
+    "redux": "^4.1.1",
+    "typescript": "^4.1.2",
+    "web-vitals": "^1.0.1",
+    "wretch": "^1.7.6",
+    "yarn": "^1.22.15"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "@types/ckeditor": "^4.9.10",
+    "@types/react-router-dom": "^5.1.8",
+    "@types/react-select": "^4.0.18",
+    "@typescript-eslint/eslint-plugin": "^4.28.4",
+    "@typescript-eslint/parser": "^4.28.4",
+    "eslint": "^7.31.0",
+    "eslint-config-airbnb": "^18.2.1",
+    "eslint-plugin-import": "^2.23.4",
+    "eslint-plugin-jsx-a11y": "^6.4.1",
+    "eslint-plugin-react": "^7.24.0",
+    "eslint-plugin-react-hooks": "^4.2.0"
+  }
+}

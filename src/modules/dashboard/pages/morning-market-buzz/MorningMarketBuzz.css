@@ -1,0 +1,13 @@
+.morning-market-buzz {
+  flex: 4;
+}
+
+.morning-market-buzz-delete {
+  color: red;
+  cursor: pointer;
+}
+
+.morning-market-buzz-edit {
+  color: rgb(98, 0, 255);
+  cursor: pointer;
+}

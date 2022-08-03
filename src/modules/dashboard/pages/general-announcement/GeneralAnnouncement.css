@@ -1,0 +1,13 @@
+.general-announcement {
+  flex: 4;
+}
+
+.general-announcement-delete {
+  color: red;
+  cursor: pointer;
+}
+
+.general-announcement-edit {
+  color: rgb(98, 0, 255);
+  cursor: pointer;
+}

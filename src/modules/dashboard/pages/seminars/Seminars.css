@@ -1,0 +1,13 @@
+.seminars {
+  flex: 4;
+}
+
+.seminar-delete {
+  color: red;
+  cursor: pointer;
+}
+
+.seminar-edit {
+  color: rgb(98, 0, 255);
+  cursor: pointer;
+}

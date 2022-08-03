@@ -1,0 +1,8 @@
+.seminar-registration {
+  flex: 4;
+}
+
+.seminar-registration-delete {
+  color: red;
+  cursor: pointer;
+}

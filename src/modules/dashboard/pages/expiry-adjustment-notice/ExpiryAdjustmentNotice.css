@@ -1,0 +1,23 @@
+.expiry-adjustment-notice {
+  flex: 4;
+}
+
+.expiry-delete {
+  color: red;
+  cursor: pointer;
+}
+
+.expiry-confirm {
+  color: green;
+  cursor: pointer;
+}
+
+.expiry-edit {
+  color: rgb(98, 0, 255);
+  cursor: pointer;
+}
+
+.expiry-pdf {
+  color: rgb(172, 47, 47);
+  cursor: pointer;
+}

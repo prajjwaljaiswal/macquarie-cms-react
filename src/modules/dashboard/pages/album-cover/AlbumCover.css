@@ -1,0 +1,13 @@
+.albums {
+  flex: 4;
+}
+
+.album-delete {
+  color: red;
+  cursor: pointer;
+}
+
+.album-edit {
+  color: rgb(98, 0, 255);
+  cursor: pointer;
+}

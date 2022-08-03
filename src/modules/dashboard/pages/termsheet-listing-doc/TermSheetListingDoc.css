@@ -1,0 +1,23 @@
+.termsheet-listing-doc {
+  flex: 4;
+}
+
+.termsheet-delete {
+  color: red;
+  cursor: pointer;
+}
+
+.termsheet-confirm {
+  color: green;
+  cursor: pointer;
+}
+
+.termsheet-edit {
+  color: rgb(98, 0, 255);
+  cursor: pointer;
+}
+
+.termsheet-pdf {
+  color: rgb(172, 47, 47);
+  cursor: pointer;
+}
