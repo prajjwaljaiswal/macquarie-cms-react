@@ -18,6 +18,14 @@ const initialState = {
   isDataError: false,
   dataErrorMessage: "",
 
+
+  TTPDataSearch: [],
+  isDataSearchStatus: "",
+  isDataSearchFetching: false,
+  isDataSearchSuccess: false,
+  isDataSearchError: false,
+  dataSearchErrorMessage: "",
+
   insertTTPstatus: "",
   isInsertTTPFetching: false,
   isInsertTTPSuccess: false,
@@ -44,6 +52,16 @@ export const getTTPlist = createAsyncThunk(
       .url(`${api}/todays-top-picks`)
       .get()
       .json((response: any) => {console.log(response); return response; });
+  }
+);
+
+export const getTTPSearch = createAsyncThunk(
+  "/power-search/symbol",
+  async ({ token, ric }: any) => {
+    return await baseService
+      .url(`${api}/power-search/symbol?ric=${ric}`)
+      .get()
+      .json((response: any) => response);
   }
 );
 
@@ -74,9 +92,11 @@ export const updateTTP = createAsyncThunk(
   "/todays-top-picks/update",
   async ({ token, id, payload }: any) => {
     return await baseService
-      .url(`${api}/todays-top-picks/update/${id}`)
+      .url(`${api}/todays-top-picks/update`)
       .post({ ...payload })
-      .json((response: any) => response)
+      .json((response: any) =>  {
+        console.log(response);
+       return response;} )
       .catch((e: any) => {
         throw e;
       });
@@ -96,7 +116,7 @@ export const deleteTTP = createAsyncThunk(
   }
 );
 
-export const TTPlistSlice = createSlice({
+export const TTPlistSlice: any = createSlice({
   name: "TTPlist",
   initialState,
   reducers: {
@@ -120,6 +140,24 @@ export const TTPlistSlice = createSlice({
       state.isError = true;
       state.status = "Error";
       state.errorMessage = action?.payload?.message;
+    }),
+    builder.addCase(getTTPSearch.pending, (state, action) => {
+      state.isDataSearchFetching = true;
+      state.isDataSearchSuccess = false;
+      state.isDataSearchStatus = "Loading...";
+    }),
+    builder.addCase(getTTPSearch.fulfilled, (state, action) => {
+      state.isDataSearchStatus = "Success";
+      state.isDataSearchFetching = false;
+      state.isDataSearchSuccess = true;
+      state.TTPDataSearch = action.payload;
+    }),
+    builder.addCase(getTTPSearch.rejected, (state, action: any) => {
+      state.isDataSearchFetching = false;
+      state.isDataSearchSuccess = false;
+      state.isDataError = true;
+      state.isDataSearchStatus = "Error";
+      state.dataErrorMessage = action?.payload?.MESSAGE;
     }),
     builder.addCase(getTTPById.pending, (state, action) => {
       state.isDataFetching = true;

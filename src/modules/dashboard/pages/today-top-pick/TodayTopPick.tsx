@@ -20,6 +20,7 @@ import {
   import {
     getTTPlist,
     getTTPById,
+    getTTPSearch,
     insertTTP,
     updateTTP,
     deleteTTP,
@@ -32,6 +33,7 @@ import {
   import { CKEditor, CKEditorInstance } from "ckeditor4-react";
   import { useForm, Controller } from "react-hook-form";
   import toast, { Toaster } from "react-hot-toast";
+import { Autocomplete } from "@material-ui/lab";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -68,6 +70,8 @@ const useStyles = makeStyles((theme) => ({
   const { token } = useSelector(loginSelector);
   const {
     TTPlist,
+    TTPDataSearch,
+    isDataSearchSuccess,
     isSuccess,
     isInsertTTPSuccess,
     isUpdateTTPSuccess,
@@ -86,21 +90,27 @@ const useStyles = makeStyles((theme) => ({
   const [searchdata, setSearchdata] = useState<any>([]);
   const [data, setData] = useState<any>([]);
   const [searched, setSearched] = useState<string>("");
+  const [searchedSymbol, setSearchedSymbol] = useState<any>([]);
   const [sEditor, setsEditor] = useState<CKEditorInstance>();
   const [fEditor, setfEditor] = useState<CKEditorInstance>();
   const [editId, setEditId] = useState(0);
   const [button, setButton] = useState(true);
   const [pageSize, setPageSize] = useState<number>(10);
+
+  const [checkbox, setCheckbox] = useState<boolean>(false);
+
   const { register, handleSubmit, control, setValue, getValues, reset } =
     useForm({
       defaultValues: {
         date: dayjs().format("YYYY-MM-DD"),
+        id: 0,
         title: "",
         sContent: "",
         fContent: "",
         symbol: "",
-        checkbox: 1,
-        top_pick_status: 1,
+        top_pick_status: "",
+        time_scale: "",
+        top_pick_order: "",
         thai_content: ""
       },
     });
@@ -146,15 +156,18 @@ const useStyles = makeStyles((theme) => ({
   useEffect(() => {
     if (isDataSuccess) {
 
-        console.log(TTPData[0]);
-
+        // console.log(TTPData[0]);
+      (TTPData[0].top_pick_status) === 'Y' ? setCheckbox(true) : setCheckbox(false);
       setValue("date", dayjs(TTPData.publish_date).format("YYYY-MM-DD"));
       setValue("symbol", TTPData[0].symbol);
+      setValue("id", TTPData[0].id);
       setValue("top_pick_status", TTPData[0].top_pick_status);
       setValue("sContent", TTPData[0].en_content);
       sEditor?.setData(TTPData[0].en_content);
       setValue("fContent", TTPData[0].thai_content);
       fEditor?.setData(TTPData[0].thai_content);
+      setValue("time_scale", TTPData[0].time_scale);
+      setValue("top_pick_order", TTPData[0].top_pick_order);
       dispatch(clearState());
     }
 
@@ -185,6 +198,15 @@ const useStyles = makeStyles((theme) => ({
     setEditId(id);
   };
 
+  const handleSearch = (e: any) => {
+    const ric: string = e.target.value; 
+    dispatch(getTTPSearch({token, ric}));
+    if(isDataSearchSuccess){
+      console.log(TTPDataSearch);
+      setSearchedSymbol(TTPDataSearch);
+    }
+  }
+
   const handleDelete = (id: number) => {
     dispatch(deleteTTP({ token, id }));
     reset();
@@ -213,15 +235,18 @@ const useStyles = makeStyles((theme) => ({
   };
 
   const submitTTP = (e: any) => {
-    if (e.title) {
+    if (e.symbol) {
       dispatch(
         insertTTP({
           token,
           payload: {
-            publish_date: e.date,
-            en_title: e.title,
-            en_short_content: e.sContent,
-            en_full_content: e.fContent,
+            update_date: e.date,
+            top_pick_status: checkbox ? "Y" : "N",
+            symbol: e.symbol,
+            en_content: e.sContent,
+            thai_content: e.fContent,
+            time_scale: "1D",
+            top_pick_order: e.top_pick_order
           },
         })
       );
@@ -229,21 +254,25 @@ const useStyles = makeStyles((theme) => ({
       sEditor.setData();
       fEditor.setData();
     } else {
-      toast.error(`Please input title`);
+      toast.error(`Please input symbol`);
     }
   };
 
   const handleUpdate = () => {
-    if (getValues("title")) {
+    if (getValues("symbol")) {
       dispatch(
         updateTTP({
           token,
           id: editId,
           payload: {
-            publish_date: getValues("date"),
-            en_title: getValues("title"),
-            en_short_content: getValues("sContent"),
-            en_full_content: getValues("fContent"),
+            id: getValues("id"),
+            update_date: getValues("date"),
+            top_pick_status: checkbox ? "Y" : "N",
+            symbol: getValues("symbol"),
+            en_content: getValues("sContent"),
+            thai_content: getValues("fContent"),
+            time_scale: getValues("time_scale"),
+            top_pick_order: getValues("top_pick_order")
           },
         })
       );
@@ -252,9 +281,25 @@ const useStyles = makeStyles((theme) => ({
       fEditor.setData();
       setButton(true);
     } else {
-      toast.error(`Please input title`);
+      toast.error(`Please input Symbol`);
     }
   };
+
+
+  const handleCheckbox = () => {
+
+      console.log(getValues("top_pick_status"));
+
+      if(checkbox){
+        setCheckbox(false);
+      }else{
+        setCheckbox(true);
+      } 
+  }
+
+  const handleSelect = (e: any) => {
+      setValue("top_pick_order", e.target.value);
+  }
 
   const columns = [
     {
@@ -303,11 +348,18 @@ const useStyles = makeStyles((theme) => ({
   ];
 
 
+  const insertInput = (e: any, value: any) => {
+    const s = e.target.value;
+    console.log(value);
+    setValue("symbol", value);
+  }
+
+
     return (
         <>
         <div className="today-top-pick">
         <Toaster />
-         <Card className={classes.cardLay} variant="outlined">
+         <Card className={classes.cardLay} variant="outlined"> 
         <Grid container spacing={4}>
           <Grid container item xs={12} spacing={3}>
             <Grid item xs={12}>
@@ -322,8 +374,36 @@ const useStyles = makeStyles((theme) => ({
                 onSubmit={handleSubmit(submitTTP)}
               >
                 <Grid item container xs={12} spacing={3}>
+
                   <Grid item xs={3}>
-                    <Typography>Select DW Symbol:</Typography>
+                    <Typography>
+                    Select DW Symbol:
+                    </Typography>
+                  </Grid>
+                  <Grid item xs={9}>
+                      <FormControl fullWidth>
+                      <Autocomplete
+                            onChange={insertInput}
+                            freeSolo
+                            disableClearable
+                            options={searchedSymbol.map((option: any) => option.symbol)}
+                            renderInput={(params) => (
+                              <TextField
+                                name="symbol"
+                                onInput={handleSearch}
+                                {...params}
+                                label="Search symbol"
+                                InputProps={{
+                                  ...params.InputProps,
+                                  type: 'search',
+                                }}
+                              />
+                            )}
+                          />
+                      </FormControl>
+                  </Grid>
+                  <Grid item xs={3}>
+                    <Typography>Selected DW:</Typography>
                   </Grid>
                   <Grid item xs={9}>
                     <FormControl fullWidth>
@@ -334,8 +414,31 @@ const useStyles = makeStyles((theme) => ({
                           <TextField
                             {...field}
                             id="symbol"
-                            label="Select DW Symbol:"
+                            label="Selected DW:"
                             type="text"
+                            disabled
+                            InputLabelProps={{
+                              shrink: true,
+                            }}
+                          />
+                        )}
+                      />
+                    </FormControl>
+                  </Grid>
+                  <Grid item xs={3}>
+                    <Typography>Display Date:</Typography>
+                  </Grid>
+                  <Grid item xs={9}>
+                    <FormControl fullWidth>
+                    <Controller
+                        control={control}
+                        name="date"
+                        render={({ field }) => (
+                          <TextField
+                            {...field}
+                            id="date"
+                            label="Display Date:"
+                            type="date"
                             InputLabelProps={{
                               shrink: true,
                             }}
@@ -355,10 +458,40 @@ const useStyles = makeStyles((theme) => ({
                         render={({ field }) => (
 
                           <Checkbox 
-                            checked={true}
+                            {...field}
+                            onClick={handleCheckbox}
+                            checked={checkbox ? true : false}
                           />
+                                      
                         )}
                       />
+                    </FormControl>
+                  </Grid>
+                  
+                  <Grid item xs={3}>
+                    <Typography>Order:</Typography>
+                  </Grid>
+
+                  <Grid item xs={9}>
+                    <FormControl fullWidth>
+                          <Controller
+                            control={control}
+                            name="top_pick_order"
+                            render={({ field }) => (
+    
+                              <Select 
+                                {...field}
+                                onChange={handleSelect}
+                                id="top_pick_order"
+                              >
+
+                                <MenuItem value={1} >One</MenuItem>
+                                <MenuItem value={2} >Two</MenuItem>
+                                <MenuItem value={3} >Three</MenuItem>
+                              </Select>
+                                          
+                            )}
+                          />
                     </FormControl>
                   </Grid>
 
