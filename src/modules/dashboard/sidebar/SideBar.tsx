@@ -66,6 +66,17 @@ export default function SideBar() {
               </ListItem>
             </Link>
 
+
+            <Link to="/sg_cms/dashboard/DailySp500" className="link">
+              <ListItem
+                selected={selected === 17}
+                className={classes.listItem}
+                onClick={() => setSelected(17)}
+              >
+                Daily S&P500 DW update	
+              </ListItem>
+            </Link>
+
             <Link to="/sg_cms/dashboard/morning-market-buzz" className="link">
               <ListItem
                 selected={selected === 2}

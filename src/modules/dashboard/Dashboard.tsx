@@ -27,6 +27,7 @@ import Newsletter from "./pages/newsletter/Newsletter";
 import ResetPassword from "./pages/reset-password/ResetPassword";
 import FastTrackList from "./pages/fast-track/fasttrackList";
 import TodayTopPick from "./pages/today-top-pick/TodayTopPick";
+import DailySp500 from "./pages/DailySp500/DailySp500";
 
 export default function Dashboard() {
   return (
@@ -44,6 +45,11 @@ export default function Dashboard() {
             exact
             path="/sg_cms/dashboard/todaypick"
             component={TodayTopPick}
+          />
+          <PrivateRoute
+            exact
+            path="/sg_cms/dashboard/DailySp500"
+            component={DailySp500}
           />
           <PrivateRoute
             exact

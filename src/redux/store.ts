@@ -17,6 +17,7 @@ import ExpiryAdjustmentNoticeSlice from "../modules/dashboard/pages/expiry-adjus
 import ResetPasswordSlice from "../modules/dashboard/pages/reset-password/ResetPasswordSlice";
 import NewsletterSlice from "../modules/dashboard/pages/newsletter/NewsletterSlice";
 import fasttrackSlice from "../modules/dashboard/pages/fast-track/fasttrackSlice";
+import DailySp500Slice from "../modules/dashboard/pages/DailySp500/DailySp500Slice";
 
 const initState = {
   reducer: {
@@ -37,7 +38,8 @@ const initState = {
     Noticelist: ExpiryAdjustmentNoticeSlice,
     Passwordlist: ResetPasswordSlice,
     Newsletterlist: NewsletterSlice,
-    Fasttracklist:fasttrackSlice
+    Fasttracklist:fasttrackSlice,
+    DailySp500list: DailySp500Slice
   },
 };
 const store = configureStore(initState);

@@ -1,0 +1,14 @@
+.today-top-pick {
+    flex: 4;
+  }
+  
+  .today-top-pick-delete {
+    color: red;
+    cursor: pointer;
+  }
+  
+  .today-top-pick-edit {
+    color: rgb(98, 0, 255);
+    cursor: pointer;
+  }
+  
