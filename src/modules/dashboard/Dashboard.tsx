@@ -28,6 +28,10 @@ import ResetPassword from "./pages/reset-password/ResetPassword";
 import FastTrackList from "./pages/fast-track/fasttrackList";
 import TodayTopPick from "./pages/today-top-pick/TodayTopPick";
 import DailySp500 from "./pages/DailySp500/DailySp500";
+import MarketCommentary from "./pages/market-commentary/MarketCommentary";
+import DailyHsiDw from "./pages/DailyHsiDw/DailyHsiDw";
+import DailySingleStock from "./pages/DailySingleStock/DailySingleStock";
+import AllForeignIndex from "./pages/AllForeignIndex/AllForeignIndex";
 
 export default function Dashboard() {
   return (
@@ -46,10 +50,30 @@ export default function Dashboard() {
             path="/sg_cms/dashboard/todaypick"
             component={TodayTopPick}
           />
+           <PrivateRoute
+            exact
+            path="/sg_cms/dashboard/market-commentary"
+            component={MarketCommentary}
+          />
           <PrivateRoute
             exact
             path="/sg_cms/dashboard/DailySp500"
             component={DailySp500}
+          />
+          <PrivateRoute
+            exact
+            path="/sg_cms/dashboard/DailyHsiDwUpdate"
+            component={DailyHsiDw}
+          />
+          <PrivateRoute
+            exact
+            path="/sg_cms/dashboard/DailySingleStockUpdate"
+            component={DailySingleStock}
+          />
+          <PrivateRoute
+            exact
+            path="/sg_cms/dashboard/AllForeignIndex"
+            component={AllForeignIndex}
           />
           <PrivateRoute
             exact

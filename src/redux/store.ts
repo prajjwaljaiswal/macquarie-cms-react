@@ -18,6 +18,10 @@ import ResetPasswordSlice from "../modules/dashboard/pages/reset-password/ResetP
 import NewsletterSlice from "../modules/dashboard/pages/newsletter/NewsletterSlice";
 import fasttrackSlice from "../modules/dashboard/pages/fast-track/fasttrackSlice";
 import DailySp500Slice from "../modules/dashboard/pages/DailySp500/DailySp500Slice";
+import MarketCommentarySlice from "../modules/dashboard/pages/market-commentary/MarketCommentarySlice";
+import DailyHsiDwSlice from "../modules/dashboard/pages/DailyHsiDw/DailyHsiDwSlice";
+import DailySingleStockSlice from "../modules/dashboard/pages/DailySingleStock/DailySingleStockSlice";
+import AllForeignIndexSlice from "../modules/dashboard/pages/AllForeignIndex/AllForeignIndexSlice";
 
 const initState = {
   reducer: {
@@ -39,7 +43,11 @@ const initState = {
     Passwordlist: ResetPasswordSlice,
     Newsletterlist: NewsletterSlice,
     Fasttracklist:fasttrackSlice,
-    DailySp500list: DailySp500Slice
+    DailySp500list: DailySp500Slice,
+    MarketCommentarylist: MarketCommentarySlice,
+    DailyHsiDwlist: DailyHsiDwSlice,
+    DailySingleStocklist: DailySingleStockSlice,
+    AllForeignIndexlist: AllForeignIndexSlice
   },
 };
 const store = configureStore(initState);

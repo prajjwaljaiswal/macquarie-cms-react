@@ -1,0 +1,13 @@
+.overnight-market-wrap {
+  flex: 4;
+}
+
+.overnight-market-wrap-delete {
+  color: red;
+  cursor: pointer;
+}
+
+.overnight-market-wrap-edit {
+  color: rgb(98, 0, 255);
+  cursor: pointer;
+}

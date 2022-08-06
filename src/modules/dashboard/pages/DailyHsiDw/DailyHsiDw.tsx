@@ -17,18 +17,18 @@ import {
   import { EditOutlined, DeleteOutline, CloudUpload } from "@material-ui/icons";
   import SearchBar from "material-ui-search-bar";
   import { useEffect, useState } from "react";
-  import "./DailySp500.css";
+  import "./DailyHsiDw.css";
   import {
-    getDailySp500list,
-    getDailySp500ById,
-    getDailySp500Search,
-    insertDailySp500,
-    updateDailySp500,
-    deleteDailySp500,
-    DailySp500listSelector,
+    getDailyHsiDwlist,
+    getDailyHsiDwById,
+    getDailyHsiDwSearch,
+    insertDailyHsiDw,
+    updateDailyHsiDw,
+    deleteDailyHsiDw,
+    DailyHsiDwlistSelector,
     clearState,
-    updateDailySp500Image,
-  } from "./DailySp500Slice";
+    updateDailyHsiDwImage,
+  } from "./DailyHsiDwSlice";
   import { loginSelector } from "../../../login/loginSlice";
   import { useDispatch, useSelector } from "react-redux";
   import dayjs from "dayjs";
@@ -73,29 +73,29 @@ const useStyles = makeStyles((theme) => ({
 
 
 
-  export default function DailySp500() {    
+  export default function DailyHsiDw() {    
   const classes = useStyles();
   const dispatch = useDispatch();
   const { token } = useSelector(loginSelector);
   const {
-    DailySp500list,
-    DailySp500DataSearch,
+    DailyHsiDwlist,
+    DailyHsiDwDataSearch,
     isDataSearchSuccess,
     isSuccess,
-    isInsertDailySp500Success,
-    isUpdateDailySp500Success,
-    isDeleteDailySp500Success,
+    isInsertDailyHsiDwSuccess,
+    isUpdateDailyHsiDwSuccess,
+    isDeleteDailyHsiDwSuccess,
     isError,
-    isInsertDailySp500Error,
-    insertDailySp500ErrorMessage,
-    isUpdateDailySp500Error,
-    isDeleteDailySp500Error,
-    updateDailySp500ErrorMessage,
-    deleteDailySp500ErrorMessage,
+    isInsertDailyHsiDwError,
+    insertDailyHsiDwErrorMessage,
+    isUpdateDailyHsiDwError,
+    isDeleteDailyHsiDwError,
+    updateDailyHsiDwErrorMessage,
+    deleteDailyHsiDwErrorMessage,
     isDataSuccess,
     isDataError,
-    DailySp500Data,
-  } = useSelector(DailySp500listSelector);
+    DailyHsiDwData,
+  } = useSelector(DailyHsiDwlistSelector);
   const [searchdata, setSearchdata] = useState<any>([]);
   const [data, setData] = useState<any>([]);
   const [dwData, setDwData] = useState<any>([]);
@@ -132,7 +132,7 @@ const useStyles = makeStyles((theme) => ({
     });
 
   useEffect(() => {
-    dispatch(getDailySp500list({ token }));
+    dispatch(getDailyHsiDwlist({ token }));
 
     return () => {
       dispatch(clearState());
@@ -140,50 +140,50 @@ const useStyles = makeStyles((theme) => ({
   }, []);
 
   useEffect(() => {
-    dispatch(getDailySp500list({ token }));
+    dispatch(getDailyHsiDwlist({ token }));
 
-    if (isInsertDailySp500Success) {
+    if (isInsertDailyHsiDwSuccess) {
       toast.success("Successfully saved.");
     }
 
-    if (isUpdateDailySp500Success) {
+    if (isUpdateDailyHsiDwSuccess) {
       toast.success("Successfully updated.");
     }
 
-    if (isDeleteDailySp500Success) {
+    if (isDeleteDailyHsiDwSuccess) {
       toast.success("Successfully deleted.");
     }
 
     dispatch(clearState());
-  }, [isInsertDailySp500Success, isUpdateDailySp500Success, isDeleteDailySp500Success]);
+  }, [isInsertDailyHsiDwSuccess, isUpdateDailyHsiDwSuccess, isDeleteDailyHsiDwSuccess]);
 
   useEffect(() => {
     if (isSuccess) {
-      setSearchdata(DailySp500list);
-      setData(DailySp500list);
+      setSearchdata(DailyHsiDwlist);
+      setData(DailyHsiDwlist);
     }
 
     if (isError) {
       toast.error(`Unable to load data list`);
       dispatch(clearState());
     }
-  }, [isSuccess, isError, DailySp500list]);
+  }, [isSuccess, isError, DailyHsiDwlist]);
 
   useEffect(() => {
     if (isDataSuccess) {
-      setValue("date", dayjs(DailySp500Data[0].publish_date).format("YYYY-MM-DD"));
-      setValue("title", DailySp500Data[0].en_title);
-      setValue("thai_title", DailySp500Data[0].thai_title);
-      setValue("id", DailySp500Data[0].id);
-      setValue("daily_sp500_status", DailySp500Data[0].daily_sp500_status);
-      setValue("en_short_content", (DailySp500Data[0].en_short_content) ? DailySp500Data[0].en_short_content : "" );
-      sEditor?.setData((DailySp500Data[0].en_short_content) ? DailySp500Data[0].en_short_content : "");
-      setValue("en_full_content", DailySp500Data[0].en_full_content);
-      fEditor?.setData(DailySp500Data[0].en_full_content);
-      setValue("thai_short_content", DailySp500Data[0].thai_short_content);
-      thaisEditor?.setData(DailySp500Data[0].thai_short_content);
-      setValue("thai_full_content", DailySp500Data[0].thai_full_content);
-      thaifEditor?.setData(DailySp500Data[0].thai_full_content);
+      setValue("date", dayjs(DailyHsiDwData[0].publish_date).format("YYYY-MM-DD"));
+      setValue("title", DailyHsiDwData[0].en_title);
+      setValue("thai_title", DailyHsiDwData[0].thai_title);
+      setValue("id", DailyHsiDwData[0].id);
+      setValue("daily_sp500_status", DailyHsiDwData[0].daily_sp500_status);
+      setValue("en_short_content", (DailyHsiDwData[0].en_short_content) ? DailyHsiDwData[0].en_short_content : "" );
+      sEditor?.setData((DailyHsiDwData[0].en_short_content) ? DailyHsiDwData[0].en_short_content : "");
+      setValue("en_full_content", DailyHsiDwData[0].en_full_content);
+      fEditor?.setData(DailyHsiDwData[0].en_full_content);
+      setValue("thai_short_content", DailyHsiDwData[0].thai_short_content);
+      thaisEditor?.setData(DailyHsiDwData[0].thai_short_content);
+      setValue("thai_full_content", DailyHsiDwData[0].thai_full_content);
+      thaifEditor?.setData(DailyHsiDwData[0].thai_full_content);
       dispatch(clearState());
     }
 
@@ -191,25 +191,25 @@ const useStyles = makeStyles((theme) => ({
       toast.error(`Unable to retrieve data`);
       dispatch(clearState());
     }
-  }, [isDataSuccess, isDataError, DailySp500Data]);
+  }, [isDataSuccess, isDataError, DailyHsiDwData]);
 
   useEffect(() => {
-    if (isInsertDailySp500Error) {
+    if (isInsertDailyHsiDwError) {
       toast.error(`Save failed`);
       dispatch(clearState());
     }
-    if (isUpdateDailySp500Error) {
+    if (isUpdateDailyHsiDwError) {
       toast.error(`Update failed`);
       dispatch(clearState());
     }
-    if (isDeleteDailySp500Error) {
+    if (isDeleteDailyHsiDwError) {
       toast.error(`Delete failed`);
       dispatch(clearState());
     }
-  }, [isInsertDailySp500Error, isUpdateDailySp500Error, isDeleteDailySp500Error]);
+  }, [isInsertDailyHsiDwError, isUpdateDailyHsiDwError, isDeleteDailyHsiDwError]);
 
   const handleEdit = (id: number) => {
-    dispatch(getDailySp500ById({ token, id }));
+    dispatch(getDailyHsiDwById({ token, id }));
     setImage(`${api}/daily-sp-500/image/${id}`);
     setButton(false);
     setEditId(id);
@@ -217,10 +217,10 @@ const useStyles = makeStyles((theme) => ({
 
   const handleSearch = (e: any) => {
     const ric: string = e.target.value; 
-    dispatch(getDailySp500Search({token, ric}));
+    dispatch(getDailyHsiDwSearch({token, ric}));
     if(isDataSearchSuccess){
-      console.log(DailySp500DataSearch);
-      setSearchedSymbol(DailySp500DataSearch);
+      console.log(DailyHsiDwDataSearch);
+      setSearchedSymbol(DailyHsiDwDataSearch);
     }
   }
 
@@ -245,7 +245,7 @@ const useStyles = makeStyles((theme) => ({
   };
 
   const handleDelete = (id: number) => {
-    dispatch(deleteDailySp500({ token, id }));
+    dispatch(deleteDailyHsiDw({ token, id }));
     reset();
     sEditor.setData();
     fEditor.setData();
@@ -273,10 +273,10 @@ const useStyles = makeStyles((theme) => ({
     requestSearch(searched);
   };
 
-  const submitDailySp500 = (e: any) => {
+  const submitDailyHsiDw = (e: any) => {
     if (e.title) {
       dispatch(
-        insertDailySp500({
+        insertDailyHsiDw({
           token,
           payload: {
             publish_date: e.date,
@@ -306,7 +306,7 @@ const useStyles = makeStyles((theme) => ({
   const handleUpdate = () => {
     if (getValues("title")) {
       dispatch(
-        updateDailySp500({
+        updateDailyHsiDw({
           token,
           id: editId,
           payload: {
@@ -329,7 +329,7 @@ const useStyles = makeStyles((theme) => ({
           id: id,
           image: fileArrayBuffer
         }
-        dispatch(updateDailySp500Image({token, id, newPayload}));
+        dispatch(updateDailyHsiDwImage({token, id, newPayload}));
       }
    
       reset();
@@ -436,7 +436,7 @@ const useStyles = makeStyles((theme) => ({
         <Grid container spacing={4}>
           <Grid container item xs={12} spacing={3}>
             <Grid item xs={12}>
-              <h2>Daily S&P500 DW update</h2>
+              <h2>Daily HSI DW update</h2>
             </Grid>
           </Grid>
           <Grid container item xs={12} spacing={5}>
@@ -444,7 +444,7 @@ const useStyles = makeStyles((theme) => ({
               <form
                 className={classes.form}
                 noValidate
-                onSubmit={handleSubmit(submitDailySp500)}
+                onSubmit={handleSubmit(submitDailyHsiDw)}
               >
                 <Grid item container xs={12} spacing={3}>
                   <Grid item xs={3}>

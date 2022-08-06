@@ -36,6 +36,17 @@ export default function SideBar() {
         <div className="sidebar-menu">
           <List className="sidebar-list">
 
+
+          <Link to="/sg_cms/dashboard" className="link">
+              <ListItem
+                selected={selected === 1}
+                className={classes.listItem}
+                onClick={() => setSelected(1)}
+              >
+                Trending Warrants
+              </ListItem>
+            </Link>
+
           <Link to="/sg_cms/dashboard/fasttrack" className="link">
               <ListItem
                 selected={selected === 15}
@@ -46,15 +57,7 @@ export default function SideBar() {
               </ListItem>
             </Link>
 
-            <Link to="/sg_cms/dashboard" className="link">
-              <ListItem
-                selected={selected === 1}
-                className={classes.listItem}
-                onClick={() => setSelected(1)}
-              >
-                Trending Warrants
-              </ListItem>
-            </Link>
+
 
             <Link to="/sg_cms/dashboard/todaypick" className="link">
               <ListItem
@@ -67,6 +70,17 @@ export default function SideBar() {
             </Link>
 
 
+            <Link to="/sg_cms/dashboard/market-commentary" className="link">
+              <ListItem
+                selected={selected === 18}
+                className={classes.listItem}
+                onClick={() => setSelected(18)}
+              >
+                Market Commentary
+              </ListItem>
+            </Link>
+
+
             <Link to="/sg_cms/dashboard/DailySp500" className="link">
               <ListItem
                 selected={selected === 17}
@@ -74,6 +88,38 @@ export default function SideBar() {
                 onClick={() => setSelected(17)}
               >
                 Daily S&P500 DW update	
+              </ListItem>
+            </Link>
+
+            <Link to="/sg_cms/dashboard/DailyHsiDwUpdate" className="link">
+              <ListItem
+                selected={selected === 19}
+                className={classes.listItem}
+                onClick={() => setSelected(19)}
+              >
+                Daily HSI DW update	
+              </ListItem>
+            </Link>
+
+
+            <Link to="/sg_cms/dashboard/DailySingleStockUpdate" className="link">
+              <ListItem
+                selected={selected === 20}
+                className={classes.listItem}
+                onClick={() => setSelected(20)}
+              >
+                Daily Single Stock update	
+              </ListItem>
+            </Link>
+
+
+            <Link to="/sg_cms/dashboard/AllForeignIndex" className="link">
+              <ListItem
+                selected={selected === 21}
+                className={classes.listItem}
+                onClick={() => setSelected(21)}
+              >
+                All Foreign Index DW Trading Tips	
               </ListItem>
             </Link>
 
