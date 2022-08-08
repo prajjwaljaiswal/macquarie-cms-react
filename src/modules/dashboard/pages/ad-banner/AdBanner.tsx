@@ -80,7 +80,7 @@ const useStyles = makeStyles((theme) => ({
     zIndex: 2,
   },
   img: {
-    maxWidth: "250px",
+    width: "100%",
   },
 }));
 

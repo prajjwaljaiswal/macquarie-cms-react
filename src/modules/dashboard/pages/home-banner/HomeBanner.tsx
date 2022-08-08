@@ -80,7 +80,7 @@ const useStyles = makeStyles((theme) => ({
     zIndex: 2,
   },
   img: {
-    maxWidth: "250px",
+    width: "100%",
   },
 }));
 
@@ -91,12 +91,13 @@ type idList = {
 
 export default function HomeBanner() {
   const classes = useStyles();
+  const [banner, setBanner] = useState("");
   const { register, handleSubmit, control, setValue, getValues, reset } =
     useForm({
       defaultValues: {
-        order: 1,
+        order: 0,
         link: "",
-        banner: null,
+        banner: `${api}/file/image/homebanner/0`,
       },
     });
   const dispatch = useDispatch();
@@ -120,7 +121,7 @@ export default function HomeBanner() {
   } = useSelector(HomeBannerSelector);
   const [selectedFile, setSelectedFile] = useState("");
   const [idList, setIdList] = useState<number[]>([]);
-  const [banner, setBanner] = useState("");
+  const [data, setData] = useState<any>();
   const [fileArrayBuffer, setFileArrayBuffer] = useState<ArrayBuffer>();
   const [id, setId] = useState(0);
   const ITEM_HEIGHT = 48;
@@ -144,12 +145,18 @@ export default function HomeBanner() {
 
   useEffect(() => {
     if (isListSuccess) {
-      setIdList(
-        HomeBannerlist.reduce((newlist: number[], data: idList) => {
-          newlist[data.order - 1] = data.id;
-          return [...newlist];
-        }, [])
-      );
+      console.log("test break")
+      console.log(HomeBannerlist)
+      setIdList(HomeBannerlist.map((data: any) => data.id));
+      setData(HomeBannerlist);
+      setBanner(`${api}/file/image/homebanner/0`);
+      dispatch(getHomeBannerById({ token, id: 0 }));
+      // setIdList(
+      //   HomeBannerlist.reduce((newlist: number[], data: idList) => {
+      //     newlist[data.order - 1] = data.id;
+      //     return [...newlist];
+      //   }, [])
+      // );
     }
 
     if (isListError) {
@@ -226,9 +233,9 @@ export default function HomeBanner() {
         token,
         id,
         payload: {
-          order: getValues("order"),
-          link: getValues("link"),
-          image: fileArrayBuffer ? fileArrayBuffer : null,
+          id: getValues("order"),
+          desktop_link: getValues("link"),
+          desktop_image: fileArrayBuffer ? fileArrayBuffer : null,
         },
       })
     );
@@ -270,15 +277,19 @@ export default function HomeBanner() {
   };
 
   const handleImageChange = (order: any) => {
-    if (idList[order - 1]) {
-      setId(idList[order - 1]);
-      setBanner(`${api}/file/image/homebanner/${idList[order - 1]}`);
-      dispatch(getHomeBannerById({ token, id: idList[order - 1] }));
-    } else {
-      setId(0);
-      setBanner("");
-      setValue("link", "");
-    }
+    console.log(idList);
+    // if (idList[order] => 0) {
+      setId(idList[order]);
+      setBanner(`${api}/file/image/homebanner/${idList[order]}`);
+      dispatch(getHomeBannerById({ token, id: idList[order] }));
+      // console.log(data);
+      const fetchLink:any = data[idList[order]];
+      setValue("link", fetchLink.desktop_link);
+    // } else {
+    //   setId(0);
+    //   setBanner("");
+    //   setValue("link", "");
+    // }
   };
   return (
     <div className="home-banner">
@@ -314,10 +325,11 @@ export default function HomeBanner() {
                             handleImageChange(e.target.value);
                           }}
                         >
-                          {[...Array.from({ length: 6 }, (_, i) => i + 1)].map(
+                          {[0, 1, 2, 3, 4, 5].map(
                             (value, index) => (
+
                               <MenuItem key={index} value={value}>
-                                {value === 4 || value === 5 || value === 6  ? "mobile - " + (value - 3) : value}
+                                {value === 1 || value === 3 || value === 5  ? "Mobile Banner " + (value) : "Desktop Banner "+value}
                               </MenuItem>
                             )
                           )}
@@ -335,7 +347,7 @@ export default function HomeBanner() {
                   {banner ? (
                     <img className={classes.img} src={banner} />
                   ) : (
-                    <img className={classes.img} src="../000000.jpg" />
+                    <img className={classes.img} src={`${api}/file/image/homebanner/0`} />
                   )}
                 </Grid>
                 
@@ -348,7 +360,7 @@ export default function HomeBanner() {
                       control={control}
                       name="link"
                       render={({ field }) => (
-                        <TextField {...field} label="URL" />
+                        <TextField {...field} />
                       )}
                     />
                   </FormControl>

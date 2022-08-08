@@ -43,7 +43,10 @@ export const getHomeBannerlist = createAsyncThunk(
     return await baseService
       .url(`${api}/homebanner`)
       .get()
-      .json((response: any) => response);
+      .json((response: any) =>  {
+        console.log(response);
+         return response
+      });
   }
 );
 

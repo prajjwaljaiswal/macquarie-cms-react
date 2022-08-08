@@ -15,7 +15,7 @@ const config: ConfiguredMiddleware = (next) => (url, opts) => {
 export const baseService = wretch()
   .catcher(401, (err) => {
     sessionStorage.clear();
-    history.push("/sg_cms");
+    history.push("/th_cms");
   })
   .catcher(501, (err) => {
     sessionStorage.clear();

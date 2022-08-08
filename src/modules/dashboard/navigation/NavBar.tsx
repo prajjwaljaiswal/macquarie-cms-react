@@ -20,7 +20,7 @@ export default function NavBar() {
     <div className={classes.root}>
       <AppBar position="static">
         <Toolbar className={classes.logo}>
-          <img src="../../../sg_cms/cms_header.png" />
+          <img src="../../../th_cms/cms_header.png" />
         </Toolbar>
       </AppBar>
     </div>

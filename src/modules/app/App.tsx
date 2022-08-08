@@ -14,8 +14,8 @@ function App() {
       <Router history={history}>
         <AuthProvider>
           <Switch>
-            <PrivateRoute path="/sg_cms/dashboard" component={Dashboard} />
-            <Route exact path="/sg_cms/" component={Login} />
+            <PrivateRoute path="/th_cms/dashboard" component={Dashboard} />
+            <Route exact path="/th_cms/" component={Login} />
           </Switch>
         </AuthProvider>
       </Router>

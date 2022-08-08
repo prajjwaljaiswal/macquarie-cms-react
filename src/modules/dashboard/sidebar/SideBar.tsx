@@ -23,7 +23,7 @@ export default function SideBar() {
       if (confirm("Are you sure to logout?")) {
         sessionStorage.setItem("token", "");
         dispatch(clearState());
-        history.push("/sg_cms/");
+        history.push("/th_cms/");
       }
     } catch {
       console.log("failed to logout");
@@ -37,7 +37,7 @@ export default function SideBar() {
           <List className="sidebar-list">
 
 
-          <Link to="/sg_cms/dashboard" className="link">
+          <Link to="/th_cms/dashboard" className="link">
               <ListItem
                 selected={selected === 1}
                 className={classes.listItem}
@@ -47,7 +47,7 @@ export default function SideBar() {
               </ListItem>
             </Link>
 
-          <Link to="/sg_cms/dashboard/fasttrack" className="link">
+          <Link to="/th_cms/dashboard/fasttrack" className="link">
               <ListItem
                 selected={selected === 15}
                 className={classes.listItem}
@@ -59,7 +59,7 @@ export default function SideBar() {
 
 
 
-            <Link to="/sg_cms/dashboard/todaypick" className="link">
+            <Link to="/th_cms/dashboard/todaypick" className="link">
               <ListItem
                 selected={selected === 16}
                 className={classes.listItem}
@@ -70,7 +70,7 @@ export default function SideBar() {
             </Link>
 
 
-            <Link to="/sg_cms/dashboard/market-commentary" className="link">
+            <Link to="/th_cms/dashboard/market-commentary" className="link">
               <ListItem
                 selected={selected === 18}
                 className={classes.listItem}
@@ -81,7 +81,7 @@ export default function SideBar() {
             </Link>
 
 
-            <Link to="/sg_cms/dashboard/DailySp500" className="link">
+            <Link to="/th_cms/dashboard/DailySp500" className="link">
               <ListItem
                 selected={selected === 17}
                 className={classes.listItem}
@@ -91,7 +91,7 @@ export default function SideBar() {
               </ListItem>
             </Link>
 
-            <Link to="/sg_cms/dashboard/DailyHsiDwUpdate" className="link">
+            <Link to="/th_cms/dashboard/DailyHsiDwUpdate" className="link">
               <ListItem
                 selected={selected === 19}
                 className={classes.listItem}
@@ -102,7 +102,7 @@ export default function SideBar() {
             </Link>
 
 
-            <Link to="/sg_cms/dashboard/DailySingleStockUpdate" className="link">
+            <Link to="/th_cms/dashboard/DailySingleStockUpdate" className="link">
               <ListItem
                 selected={selected === 20}
                 className={classes.listItem}
@@ -113,7 +113,7 @@ export default function SideBar() {
             </Link>
 
 
-            <Link to="/sg_cms/dashboard/AllForeignIndex" className="link">
+            <Link to="/th_cms/dashboard/AllForeignIndex" className="link">
               <ListItem
                 selected={selected === 21}
                 className={classes.listItem}
@@ -123,7 +123,17 @@ export default function SideBar() {
               </ListItem>
             </Link>
 
-            <Link to="/sg_cms/dashboard/morning-market-buzz" className="link">
+            <Link to="/th_cms/dashboard/cautionlist" className="link">
+              <ListItem
+                selected={selected === 22}
+                className={classes.listItem}
+                onClick={() => setSelected(22)}
+              >
+               Caution List
+              </ListItem>
+            </Link>
+
+            <Link to="/th_cms/dashboard/morning-market-buzz" className="link">
               <ListItem
                 selected={selected === 2}
                 className={classes.listItem}
@@ -132,7 +142,7 @@ export default function SideBar() {
                 Morning Market Buzz
               </ListItem>
             </Link>
-            <Link to="/sg_cms/dashboard/overnight-market-wrap" className="link">
+            <Link to="/th_cms/dashboard/overnight-market-wrap" className="link">
               <ListItem
                 selected={selected === 3}
                 className={classes.listItem}
@@ -141,7 +151,7 @@ export default function SideBar() {
                 Overnight Market Wrap
               </ListItem>
             </Link>
-            <Link to="/sg_cms/dashboard/newsletter" className="link">
+            <Link to="/th_cms/dashboard/newsletter" className="link">
               <ListItem
                 selected={selected === 4}
                 className={classes.listItem}
@@ -150,7 +160,7 @@ export default function SideBar() {
                 Newsletter
               </ListItem>
             </Link>
-            <Link to="/sg_cms/dashboard/index-future" className="link">
+            <Link to="/th_cms/dashboard/index-future" className="link">
               <ListItem
                 selected={selected === 5}
                 className={classes.listItem}
@@ -159,7 +169,7 @@ export default function SideBar() {
                 Index Future
               </ListItem>
             </Link>
-            <Link to="/sg_cms/dashboard/ad-banner" className="link">
+            <Link to="/th_cms/dashboard/ad-banner" className="link">
               <ListItem
                 selected={selected === 6}
                 className={classes.listItem}
@@ -168,7 +178,7 @@ export default function SideBar() {
                 Ad Banner
               </ListItem>
             </Link>
-            <Link to="/sg_cms/dashboard/home-banner" className="link">
+            <Link to="/th_cms/dashboard/home-banner" className="link">
               <ListItem
                 selected={selected === 14}
                 className={classes.listItem}
@@ -177,7 +187,7 @@ export default function SideBar() {
                 Home Banner
               </ListItem>
             </Link>
-            <Link to="/sg_cms/dashboard/termsheet-listing-doc" className="link">
+            <Link to="/th_cms/dashboard/termsheet-listing-doc" className="link">
               <ListItem
                 selected={selected === 7}
                 className={classes.listItem}
@@ -187,7 +197,7 @@ export default function SideBar() {
               </ListItem>
             </Link>
             <Link
-              to="/sg_cms/dashboard/expiry-adjustment-notice"
+              to="/th_cms/dashboard/expiry-adjustment-notice"
               className="link"
             >
               <ListItem
@@ -198,7 +208,7 @@ export default function SideBar() {
                 Expiry & Adjustment Notice
               </ListItem>
             </Link>
-            <Link to="/sg_cms/dashboard/seminars" className="link">
+            <Link to="/th_cms/dashboard/seminars" className="link">
               <ListItem
                 selected={selected === 9}
                 className={classes.listItem}
@@ -207,7 +217,7 @@ export default function SideBar() {
                 Seminars
               </ListItem>
             </Link>
-            <Link to="/sg_cms/dashboard/seminar-registration" className="link">
+            <Link to="/th_cms/dashboard/seminar-registration" className="link">
               <ListItem
                 selected={selected === 10}
                 className={classes.listItem}
@@ -216,7 +226,7 @@ export default function SideBar() {
                 Seminar Registration
               </ListItem>
             </Link>
-            <Link to="/sg_cms/dashboard/album-cover" className="link">
+            <Link to="/th_cms/dashboard/album-cover" className="link">
               <ListItem
                 selected={selected === 11}
                 className={classes.listItem}
@@ -225,7 +235,7 @@ export default function SideBar() {
                 Photo Gallery Album Cover
               </ListItem>
             </Link>
-            <Link to="/sg_cms/dashboard/photo-gallery" className="link">
+            <Link to="/th_cms/dashboard/photo-gallery" className="link">
               <ListItem
                 selected={selected === 12}
                 className={classes.listItem}
@@ -234,7 +244,7 @@ export default function SideBar() {
                 Photo Gallery
               </ListItem>
             </Link>
-            <Link to="/sg_cms/dashboard/reset-password" className="link">
+            <Link to="/th_cms/dashboard/reset-password" className="link">
               <ListItem
                 selected={selected === 13}
                 className={classes.listItem}

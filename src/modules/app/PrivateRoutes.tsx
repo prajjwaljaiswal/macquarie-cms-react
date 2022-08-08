@@ -10,7 +10,7 @@ export default function PrivateRoute({ component: Component, ...rest }: any) {
     <Route
       {...rest}
       render={(props) =>
-        token ? <Component {...props} /> : <Redirect to="/sg_cms/" />
+        token ? <Component {...props} /> : <Redirect to="/th_cms/" />
       }
     />
   );

@@ -32,6 +32,7 @@ import MarketCommentary from "./pages/market-commentary/MarketCommentary";
 import DailyHsiDw from "./pages/DailyHsiDw/DailyHsiDw";
 import DailySingleStock from "./pages/DailySingleStock/DailySingleStock";
 import AllForeignIndex from "./pages/AllForeignIndex/AllForeignIndex";
+import Cautionlist from "./pages/caution-list/cautionList";
 
 export default function Dashboard() {
   return (
@@ -42,132 +43,137 @@ export default function Dashboard() {
         <Switch>
         <PrivateRoute
             exact
-            path="/sg_cms/dashboard/fasttrack"
+            path="/th_cms/dashboard/fasttrack"
             component={FastTrackList}
           />
           <PrivateRoute
             exact
-            path="/sg_cms/dashboard/todaypick"
+            path="/th_cms/dashboard/todaypick"
             component={TodayTopPick}
           />
            <PrivateRoute
             exact
-            path="/sg_cms/dashboard/market-commentary"
+            path="/th_cms/dashboard/market-commentary"
             component={MarketCommentary}
           />
           <PrivateRoute
             exact
-            path="/sg_cms/dashboard/DailySp500"
+            path="/th_cms/dashboard/DailySp500"
             component={DailySp500}
           />
           <PrivateRoute
             exact
-            path="/sg_cms/dashboard/DailyHsiDwUpdate"
+            path="/th_cms/dashboard/DailyHsiDwUpdate"
             component={DailyHsiDw}
           />
           <PrivateRoute
             exact
-            path="/sg_cms/dashboard/DailySingleStockUpdate"
+            path="/th_cms/dashboard/DailySingleStockUpdate"
             component={DailySingleStock}
           />
           <PrivateRoute
             exact
-            path="/sg_cms/dashboard/AllForeignIndex"
+            path="/th_cms/dashboard/AllForeignIndex"
             component={AllForeignIndex}
           />
           <PrivateRoute
             exact
-            path="/sg_cms/dashboard"
+            path="/th_cms/dashboard"
             component={WarrantHotList}
           />
           <PrivateRoute
             exact
-            path="/sg_cms/dashboard/general-announcement"
+            path="/th_cms/dashboard/general-announcement"
             component={GeneralAnnouncement}
           />
           <PrivateRoute
             exact
-            path="/sg_cms/dashboard/morning-market-buzz"
+            path="/th_cms/dashboard/morning-market-buzz"
             component={MorningMarketBuzz}
           />
           <PrivateRoute
             exact
-            path="/sg_cms/dashboard/overnight-market-wrap"
+            path="/th_cms/dashboard/overnight-market-wrap"
             component={OvernightMarketWrap}
           />
           <PrivateRoute
             exact
-            path="/sg_cms/dashboard/email"
+            path="/th_cms/dashboard/email"
             component={Email}
           />
           <PrivateRoute
             exact
-            path="/sg_cms/dashboard/newsletter"
+            path="/th_cms/dashboard/newsletter"
             component={Newsletter}
           />
           <PrivateRoute
             exact
-            path="/sg_cms/dashboard/index-future"
+            path="/th_cms/dashboard/index-future"
             component={IndexFuture}
           />
           <PrivateRoute
             exact
-            path="/sg_cms/dashboard/live-matrics-contract"
+            path="/th_cms/dashboard/cautionlist"
+            component={Cautionlist}
+          />
+          <PrivateRoute
+            exact
+            path="/th_cms/dashboard/live-matrics-contract"
             component={LiveMatricsContract}
           />
           <PrivateRoute
             exact
-            path="/sg_cms/dashboard/termsheet-listing-doc"
+            path="/th_cms/dashboard/termsheet-listing-doc"
             component={TermSheetListingDoc}
           />
           <PrivateRoute
             exact
-            path="/sg_cms/dashboard/expiry-adjustment-notice"
+            path="/th_cms/dashboard/expiry-adjustment-notice"
             component={ExpiryAdjustmentNotice}
           />
           <PrivateRoute
             exact
-            path="/sg_cms/dashboard/seminars"
+            path="/th_cms/dashboard/seminars"
             component={Seminars}
           />
           <PrivateRoute
             exact
-            path="/sg_cms/dashboard/seminar-registration"
+            path="/th_cms/dashboard/seminar-registration"
             component={SeminarRegistration}
           />
           <PrivateRoute
             exact
-            path="/sg_cms/dashboard/money-flow"
+            path="/th_cms/dashboard/money-flow"
             component={MoneyFlow}
           />
           <PrivateRoute
             exact
-            path="/sg_cms/dashboard/ad-banner"
+            path="/th_cms/dashboard/ad-banner"
             component={AdBanner}
           />
           <PrivateRoute
             exact
-            path="/sg_cms/dashboard/home-banner"
+            path="/th_cms/dashboard/home-banner"
             component={HomeBanner}
           />
           <PrivateRoute
             exact
-            path="/sg_cms/dashboard/video-banner"
+            path="/th_cms/dashboard/video-banner"
             component={VideoBanner}
           />
           <PrivateRoute
             exact
-            path="/sg_cms/dashboard/album-cover"
+            path="/th_cms/dashboard/album-cover"
             component={AlbumCover}
           />
           <PrivateRoute
             exact
-            path="/sg_cms/dashboard/photo-gallery"
+            path="/th_cms/dashboard/photo-gallery"
             component={PhotoGallery}
           />
           <PrivateRoute
             exact
-            path="/sg_cms/dashboard/reset-password"
+            path="/th_cms/dashboard/reset-password"
             component={ResetPassword}
           />
         </Switch>

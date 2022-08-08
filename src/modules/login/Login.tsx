@@ -65,14 +65,14 @@ const Login = () => {
   useEffect(() => {
     if (isSuccess) {
       if(errorMessage > 15)
-        history.push("/sg_cms/dashboard");
+        history.push("/th_cms/dashboard");
       else {
         toast.error("Your account password will expire after " + errorMessage + " day(s).");
 
         if(errorMessage < 4)
-          history.push("/sg_cms/dashboard/reset-password");
+          history.push("/th_cms/dashboard/reset-password");
         else
-          history.push("/sg_cms/dashboard");
+          history.push("/th_cms/dashboard");
       }
     }
     if (isError) {
@@ -85,7 +85,7 @@ const Login = () => {
 
       toast.error(finalmessage);
       dispatch(clearState());
-      history.push("/sg_cms");
+      history.push("/th_cms");
     }
   }, [isSuccess, isError]);
 

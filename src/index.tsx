@@ -8,7 +8,7 @@ import store from "./redux/store";
 
 ReactDOM.render(
   <React.StrictMode>
-    <BrowserRouter basename="/sg_cms">
+    <BrowserRouter basename="/th_cms">
       <Provider store={store}>
         <App />
       </Provider>

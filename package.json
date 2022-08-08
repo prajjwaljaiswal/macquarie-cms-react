@@ -1,7 +1,7 @@
 {
   "name": "macquarie-cms",
   "version": "0.1.0",
-  "homepage": "/sg_cms",
+  "homepage": "/th_cms",
   "private": true,
   "dependencies": {
     "@material-ui/core": "^4.12.2",

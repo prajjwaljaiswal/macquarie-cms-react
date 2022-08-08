@@ -1,0 +1,8 @@
+.warrant-hotlist {
+  flex: 4;
+}
+
+.warrant-hotlist-delete {
+  color: red;
+  cursor: pointer;
+}

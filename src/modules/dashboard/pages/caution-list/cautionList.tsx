@@ -22,9 +22,9 @@ import Autocomplete, {
   createFilterOptions,
 } from "@material-ui/lab/Autocomplete";
 
-import { getHotList, updateFastTrackList } from "./fasttrackSlice";
+import { getHotList, updatecautionlist } from "./cautionSlice";
 import { loginSelector } from "../../../login/loginSlice";
-import { FastTrackSelector } from "./fasttrackSlice";
+import { cautionSelector } from "./cautionSlice";
 import { useForm } from "react-hook-form";
 
 import toast, { Toaster } from "react-hot-toast";
@@ -61,25 +61,22 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function FastTrackList() {
+export default function Cautionlist() {
   const classes = useStyles();
   const dispatch = useDispatch();
   const { token } = useSelector(loginSelector);
   const {
-    
-    isFastTrackListSuccess,
-    isFastTrackListError,
-    isFastTrackListUpdateSuccess,
-    
-    fasttracklist
-  } = useSelector(FastTrackSelector);
+    iscautionlistSuccess,
+    iscautionlistError,
+    iscautionlistUpdateSuccess,
+    cautionlist
+  } = useSelector(cautionSelector);
   
 
   const [data, setData] = useState<any>([]);
   const [filtereddata, setFilteredData] = useState<any>([]);
   
   const [pageSize, setPageSize] = useState<number>(10);
-  console.log("DFsdfsdfs")
   const filterOptions = createFilterOptions({
     trim: true,
     stringify: (option: any) => JSON.stringify(option),
@@ -92,8 +89,8 @@ export default function FastTrackList() {
 
 
   useEffect(() => {
-    if (isFastTrackListSuccess) {
-        const formattedHotlist = fasttracklist.map((hl: any, i: number) => ({
+    if (iscautionlistSuccess) {
+        const formattedHotlist = cautionlist.map((hl: any, i: number) => ({
         ...hl,
         idx: hl.ticker,
         id: i,
@@ -103,21 +100,21 @@ export default function FastTrackList() {
     }
     
 
-    if (isFastTrackListError) {
+    if (iscautionlistError) {
     }
-  }, [isFastTrackListSuccess, isFastTrackListError, fasttracklist,]);
+  }, [iscautionlistSuccess, iscautionlistError, cautionlist,]);
 
   useEffect(() => {
-    if(isFastTrackListUpdateSuccess){
+    if(iscautionlistUpdateSuccess){
       dispatch(getHotList({ token }));
     }
-  },[isFastTrackListUpdateSuccess])
+  },[iscautionlistUpdateSuccess])
 
   
 
   const onUpdate = () => {
     dispatch(
-      updateFastTrackList({
+      updatecautionlist({
         token,
         payload: {
           data: data
@@ -145,7 +142,7 @@ export default function FastTrackList() {
   const columns = [
     {
       field: "options",
-      headerName: "Fast track",
+      headerName: "Caution List",
       flex: 1,
       renderCell: (params: any) => {
         return (
@@ -181,7 +178,7 @@ export default function FastTrackList() {
         <Grid container spacing={4}>
           <Grid container item xs={12} spacing={3}>
             <Grid item xs={12}>
-              <h2>Fast track</h2>
+              <h2>Caution List</h2>
             </Grid>
           </Grid>
      

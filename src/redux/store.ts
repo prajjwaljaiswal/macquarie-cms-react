@@ -22,6 +22,7 @@ import MarketCommentarySlice from "../modules/dashboard/pages/market-commentary/
 import DailyHsiDwSlice from "../modules/dashboard/pages/DailyHsiDw/DailyHsiDwSlice";
 import DailySingleStockSlice from "../modules/dashboard/pages/DailySingleStock/DailySingleStockSlice";
 import AllForeignIndexSlice from "../modules/dashboard/pages/AllForeignIndex/AllForeignIndexSlice";
+import cautionSlice from "../modules/dashboard/pages/caution-list/cautionSlice";
 
 const initState = {
   reducer: {
@@ -43,6 +44,7 @@ const initState = {
     Passwordlist: ResetPasswordSlice,
     Newsletterlist: NewsletterSlice,
     Fasttracklist:fasttrackSlice,
+    cautionlist: cautionSlice,
     DailySp500list: DailySp500Slice,
     MarketCommentarylist: MarketCommentarySlice,
     DailyHsiDwlist: DailyHsiDwSlice,
