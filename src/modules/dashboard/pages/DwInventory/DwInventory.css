@@ -1,0 +1,17 @@
+.dw-inventory {
+    flex: 4;
+  }
+  
+  .dw-inventory-delete {
+    color: red;
+    cursor: pointer;
+  }
+  
+  .dw-inventory-edit {
+    color: rgb(98, 0, 255);
+    cursor: pointer;
+  }
+
+  .input-field{
+    float: right;
+  }

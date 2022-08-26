@@ -1,4 +1,4 @@
-import { List, ListItem, makeStyles, MenuItem } from "@material-ui/core";
+import { List, ListItem, makeStyles, MenuItem, Typography } from "@material-ui/core";
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { Link, useHistory } from "react-router-dom";
@@ -16,7 +16,7 @@ export default function SideBar() {
   const history = useHistory();
   const dispatch = useDispatch();
   const classes = useStyles();
-  const [selected, setSelected] = useState<number>(1);
+  const [selected, setSelected] = useState<number>(0);
 
   async function handleLogout() {
     try {
@@ -35,13 +35,11 @@ export default function SideBar() {
       <div className="sidebar-wrapper">
         <div className="sidebar-menu">
           <List className="sidebar-list">
-
-
           <Link to="/th_cms/dashboard" className="link">
               <ListItem
-                selected={selected === 1}
+                selected={selected === 0}
                 className={classes.listItem}
-                onClick={() => setSelected(1)}
+                onClick={() => setSelected(0)}
               >
                 Trending Warrants
               </ListItem>
@@ -49,16 +47,280 @@ export default function SideBar() {
 
           <Link to="/th_cms/dashboard/fasttrack" className="link">
               <ListItem
-                selected={selected === 15}
+                selected={selected === 1}
                 className={classes.listItem}
-                onClick={() => setSelected(15)}
+                onClick={() => setSelected(1)}
               >
                 Fast Track
               </ListItem>
             </Link>
 
+            <Link to="/th_cms/dashboard/fasttrack" className="link">
+              <ListItem
+                selected={selected === 2}
+                className={classes.listItem}
+                onClick={() => setSelected(2)}
+              >
+                  <Typography style={{ color: "red" }}>
+                    Daily Set50 by AECs 
+                  </Typography>
+              </ListItem>
+            </Link>
+
+            <Link to="/th_cms/dashboard/market-commentary" className="link">
+              <ListItem
+                selected={selected === 3}
+                className={classes.listItem}
+                onClick={() => setSelected(3)}
+              >
+                Market Commentary
+              </ListItem>
+            </Link>
+
+            <Link to="/th_cms/dashboard/overnight-market-wrap" className="link">
+              <ListItem
+                selected={selected === 4}
+                className={classes.listItem}
+                onClick={() => setSelected(4)}
+              >
+                Overnight Market Wrap
+              </ListItem>
+            </Link>
+
+            <Link to="/th_cms/dashboard/DailySp500" className="link">
+              <ListItem
+                selected={selected === 5}
+                className={classes.listItem}
+                onClick={() => setSelected(5)}
+              >
+                <Typography style={{ color: "red" }}>
+                  Daily S&P500 DW update	
+                </Typography>
+              </ListItem>
+            </Link>
+
+            <Link to="/th_cms/dashboard/DailyHsiDwUpdate" className="link">
+              <ListItem
+                selected={selected === 6}
+                className={classes.listItem}
+                onClick={() => setSelected(6)}
+              >
+                <Typography style={{ color: "red" }}>
+                  Daily HSI DW update	
+                </Typography>
+              </ListItem>
+            </Link>
 
 
+            <Link to="/th_cms/dashboard/DailySingleStockUpdate" className="link">
+              <ListItem
+                selected={selected === 7}
+                className={classes.listItem}
+                onClick={() => setSelected(7)}
+              >
+                <Typography style={{ color: "red" }}>
+                  Daily Single Stock update	
+                </Typography>
+              </ListItem>
+            </Link>
+
+
+            <Link to="/th_cms/dashboard/daily-market-analysis" className="link">
+              <ListItem
+                selected={selected === 8}
+                className={classes.listItem}
+                onClick={() => setSelected(8)}
+              >
+                Daily Market Analysis
+              </ListItem>
+            </Link>
+
+
+            <Link to="/th_cms/dashboard/newsletter" className="link">
+              <ListItem
+                selected={selected === 9}
+                className={classes.listItem}
+                onClick={() => setSelected(9)}
+              >
+                Newsletter
+              </ListItem>
+            </Link>
+
+
+            <Link to="/th_cms/dashboard/AllForeignIndex" className="link">
+              <ListItem
+                selected={selected === 10}
+                className={classes.listItem}
+                onClick={() => setSelected(10)}
+              >
+                All Foreign Index DW Trading Tips	
+              </ListItem>
+            </Link>
+
+
+            <Link to="/th_cms/dashboard/dw-set50-tips" className="link">
+              <ListItem
+                selected={selected === 11}
+                className={classes.listItem}
+                onClick={() => setSelected(11)}
+              >
+                     Daily and Set50 Tips 
+              </ListItem>
+            </Link>
+
+            <Link to="/th_cms/dashboard/hot-topic-review" className="link">
+              <ListItem
+                selected={selected === 12}
+                className={classes.listItem}
+                onClick={() => setSelected(12)}
+              >
+                Hot topic Hot issue review  
+              </ListItem>
+            </Link>
+
+
+            <Link to="/th_cms/dashboard/dw-tips-banner" className="link">
+              <ListItem
+                selected={selected === 13}
+                className={classes.listItem}
+                onClick={() => setSelected(13)}
+              >
+                    Dw Tips Banner
+              </ListItem>
+            </Link>
+
+
+            <Link to="/th_cms/dashboard/home-banner" className="link">
+              <ListItem
+                selected={selected === 14}
+                className={classes.listItem}
+                onClick={() => setSelected(14)}
+              >
+                Home Banner
+              </ListItem>
+            </Link>
+
+
+            <Link to="/th_cms/dashboard/ad-banner" className="link">
+              <ListItem
+                selected={selected === 15}
+                className={classes.listItem}
+                onClick={() => setSelected(15)}
+              >
+                Ad Banner
+              </ListItem>
+            </Link>
+
+
+            <Link to="/th_cms/dashboard/index-future" className="link">
+              <ListItem
+                selected={selected === 16}
+                className={classes.listItem}
+                onClick={() => setSelected(16)}
+              >
+                Index Future
+              </ListItem>
+            </Link>
+
+
+            <Link to="/th_cms/dashboard/dw-inventory" className="link">
+              <ListItem
+                selected={selected === 17}
+                className={classes.listItem}
+                onClick={() => setSelected(17)}
+              >
+               DW Inventory Sold-out
+              </ListItem>
+            </Link>
+
+
+
+            <Link to="/th_cms/dashboard/seminars" className="link">
+              <ListItem
+                selected={selected === 18}
+                className={classes.listItem}
+                onClick={() => setSelected(18)}
+              >
+                Seminars
+              </ListItem>
+            </Link>
+
+            <Link to="/th_cms/dashboard/seminar-registration" className="link">
+              <ListItem
+                selected={selected === 19}
+                className={classes.listItem}
+                onClick={() => setSelected(19)}
+              >
+                Seminar Registration
+              </ListItem>
+            </Link>
+
+
+            <Link to="/th_cms/dashboard/fasttrack" className="link">
+              <ListItem
+                selected={selected === 20}
+                className={classes.listItem}
+                onClick={() => setSelected(20)}
+              >
+                <Typography style={{ color: "red" }}>
+                    Seminar Reminder
+                </Typography>  
+              </ListItem>
+            </Link>
+
+
+            <Link to="/th_cms/dashboard/dw28update" className="link">
+              <ListItem
+                selected={selected === 21}
+                className={classes.listItem}
+                onClick={() => setSelected(21)}
+              >
+               Dw28 Update
+              </ListItem>
+            </Link>
+
+            <Link to="/th_cms/dashboard/reset-password" className="link">
+              <ListItem
+                selected={selected === 22}
+                className={classes.listItem}
+                onClick={() => setSelected(22)}
+              >
+                Reset Password
+              </ListItem>
+            </Link>
+
+
+            
+            <Link to="/th_cms/dashboard/cautionlist" className="link">
+              <ListItem
+                selected={selected === 23}
+                className={classes.listItem}
+                onClick={() => setSelected(23)}
+              >
+               Caution List
+              </ListItem>
+            </Link>
+
+            <Link to="/th_cms/dashboard/fasttrack" className="link">
+              <ListItem
+                selected={selected === 20}
+                className={classes.listItem}
+                onClick={() => setSelected(20)}
+              >
+                <Typography style={{ color: "red" }}>
+                    Activities
+                </Typography>  
+              </ListItem>
+            </Link>
+
+
+            <ListItem className={classes.listItem} onClick={handleLogout}>
+              Logout
+            </ListItem>
+
+            {/* End sidebar list */}
+
+          {/* 
             <Link to="/th_cms/dashboard/todaypick" className="link">
               <ListItem
                 selected={selected === 16}
@@ -70,68 +332,11 @@ export default function SideBar() {
             </Link>
 
 
-            <Link to="/th_cms/dashboard/market-commentary" className="link">
-              <ListItem
-                selected={selected === 18}
-                className={classes.listItem}
-                onClick={() => setSelected(18)}
-              >
-                Market Commentary
-              </ListItem>
-            </Link>
 
 
-            <Link to="/th_cms/dashboard/DailySp500" className="link">
-              <ListItem
-                selected={selected === 17}
-                className={classes.listItem}
-                onClick={() => setSelected(17)}
-              >
-                Daily S&P500 DW update	
-              </ListItem>
-            </Link>
-
-            <Link to="/th_cms/dashboard/DailyHsiDwUpdate" className="link">
-              <ListItem
-                selected={selected === 19}
-                className={classes.listItem}
-                onClick={() => setSelected(19)}
-              >
-                Daily HSI DW update	
-              </ListItem>
-            </Link>
 
 
-            <Link to="/th_cms/dashboard/DailySingleStockUpdate" className="link">
-              <ListItem
-                selected={selected === 20}
-                className={classes.listItem}
-                onClick={() => setSelected(20)}
-              >
-                Daily Single Stock update	
-              </ListItem>
-            </Link>
 
-
-            <Link to="/th_cms/dashboard/AllForeignIndex" className="link">
-              <ListItem
-                selected={selected === 21}
-                className={classes.listItem}
-                onClick={() => setSelected(21)}
-              >
-                All Foreign Index DW Trading Tips	
-              </ListItem>
-            </Link>
-
-            <Link to="/th_cms/dashboard/cautionlist" className="link">
-              <ListItem
-                selected={selected === 22}
-                className={classes.listItem}
-                onClick={() => setSelected(22)}
-              >
-               Caution List
-              </ListItem>
-            </Link>
 
             <Link to="/th_cms/dashboard/morning-market-buzz" className="link">
               <ListItem
@@ -142,51 +347,11 @@ export default function SideBar() {
                 Morning Market Buzz
               </ListItem>
             </Link>
-            <Link to="/th_cms/dashboard/overnight-market-wrap" className="link">
-              <ListItem
-                selected={selected === 3}
-                className={classes.listItem}
-                onClick={() => setSelected(3)}
-              >
-                Overnight Market Wrap
-              </ListItem>
-            </Link>
-            <Link to="/th_cms/dashboard/newsletter" className="link">
-              <ListItem
-                selected={selected === 4}
-                className={classes.listItem}
-                onClick={() => setSelected(4)}
-              >
-                Newsletter
-              </ListItem>
-            </Link>
-            <Link to="/th_cms/dashboard/index-future" className="link">
-              <ListItem
-                selected={selected === 5}
-                className={classes.listItem}
-                onClick={() => setSelected(5)}
-              >
-                Index Future
-              </ListItem>
-            </Link>
-            <Link to="/th_cms/dashboard/ad-banner" className="link">
-              <ListItem
-                selected={selected === 6}
-                className={classes.listItem}
-                onClick={() => setSelected(6)}
-              >
-                Ad Banner
-              </ListItem>
-            </Link>
-            <Link to="/th_cms/dashboard/home-banner" className="link">
-              <ListItem
-                selected={selected === 14}
-                className={classes.listItem}
-                onClick={() => setSelected(14)}
-              >
-                Home Banner
-              </ListItem>
-            </Link>
+
+
+ 
+
+       
             <Link to="/th_cms/dashboard/termsheet-listing-doc" className="link">
               <ListItem
                 selected={selected === 7}
@@ -195,8 +360,10 @@ export default function SideBar() {
               >
                 Termsheets & Listing Doc
               </ListItem>
-            </Link>
-            <Link
+            </Link> */}
+
+
+            {/* <Link
               to="/th_cms/dashboard/expiry-adjustment-notice"
               className="link"
             >
@@ -207,26 +374,9 @@ export default function SideBar() {
               >
                 Expiry & Adjustment Notice
               </ListItem>
-            </Link>
-            <Link to="/th_cms/dashboard/seminars" className="link">
-              <ListItem
-                selected={selected === 9}
-                className={classes.listItem}
-                onClick={() => setSelected(9)}
-              >
-                Seminars
-              </ListItem>
-            </Link>
-            <Link to="/th_cms/dashboard/seminar-registration" className="link">
-              <ListItem
-                selected={selected === 10}
-                className={classes.listItem}
-                onClick={() => setSelected(10)}
-              >
-                Seminar Registration
-              </ListItem>
-            </Link>
-            <Link to="/th_cms/dashboard/album-cover" className="link">
+            </Link> */}
+            
+            {/* <Link to="/th_cms/dashboard/album-cover" className="link">
               <ListItem
                 selected={selected === 11}
                 className={classes.listItem}
@@ -244,48 +394,13 @@ export default function SideBar() {
                 Photo Gallery
               </ListItem>
             </Link>
-            <Link to="/th_cms/dashboard/reset-password" className="link">
-              <ListItem
-                selected={selected === 13}
-                className={classes.listItem}
-                onClick={() => setSelected(13)}
-              >
-                Reset Password
-              </ListItem>
-            </Link>
+
+ */}
 
 
-            <ListItem className={classes.listItem} onClick={handleLogout}>
-              Logout
-            </ListItem>
           </List>
         </div>
-        {/* <div className="sidebar-menu">
-          <h3 className="sidebar-title">Email and Matrices</h3>
-          <ul className="sidebar-list">
-          </ul>
-        </div>
-
-        <div className="sidebar-menu">
-          <h3 className="sidebar-title">TimeSheets and Notices</h3>
-          <ul className="sidebar-list">
-          </ul>
-        </div>
-        <div className="sidebar-menu">
-          <h3 className="sidebar-title">Seminars</h3>
-          <ul className="sidebar-list">
-          </ul>
-        </div>
-        <div className="sidebar-menu">
-          <h3 className="sidebar-title">Others</h3>
-          <ul className="sidebar-list">
-          </ul>
-        </div>
-        <div className="sidebar-menu">
-          <h3 className="sidebar-title">User Actions</h3>
-          <ul className="sidebar-list">
-          </ul>
-        </div> */}
+       
       </div>
     </div>
   );

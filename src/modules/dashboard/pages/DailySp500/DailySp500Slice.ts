@@ -50,6 +50,11 @@ const initialState = {
   isDeleteDailySp500Success: false,
   isDeleteDailySp500Error: false,
   deleteDailySp500ErrorMessage: "",
+
+  Watchlist: [],
+  isWatchlistFetching: false,
+  isWatchlistSuccess: false,
+  isWatchlistError: false
 };
 
 export const getDailySp500list = createAsyncThunk(
@@ -62,11 +67,32 @@ export const getDailySp500list = createAsyncThunk(
   }
 );
 
+export const getWatchlist = createAsyncThunk(
+  "/watchlist",
+  async ({ token, payload }: { token: string, payload: any }) => {
+    return await baseService
+      .url(`${api}/watchlist`)
+      .post({ ...payload })
+      .json((response: any) => response);
+  }
+);
+
 export const getDailySp500Search = createAsyncThunk(
   "/power-search/symbol",
   async ({ token, ric }: any) => {
     return await baseService
       .url(`${api}/power-search/symbol?ric=${ric}`)
+      .get()
+      .json((response: any) => response);
+  }
+);
+
+
+export const getDailySp500Newly = createAsyncThunk(
+  "/power-search/symbol",
+  async ({ token, ric }: any) => {
+    return await baseService
+      .url(`${api}/power-search/symbol?ric=${ric}&type=n`)
       .get()
       .json((response: any) => response);
   }
@@ -87,7 +113,7 @@ export const updateDailySp500Image: any = createAsyncThunk(
   async ({ token, id, newPayload }: any) => {
     return await baseService
       .url(`${api}/daily-sp-500/upload/${id}`)
-      .post({...newPayload})
+      .post({ ...newPayload })
       .json((response: any) => response);
   }
 );
@@ -111,9 +137,10 @@ export const updateDailySp500 = createAsyncThunk(
     return await baseService
       .url(`${api}/daily-sp-500/update`)
       .post({ ...payload })
-      .json((response: any) =>  {
+      .json((response: any) => {
         console.log(response);
-       return response;} )
+        return response;
+      })
       .catch((e: any) => {
         throw e;
       });
@@ -132,6 +159,12 @@ export const deleteDailySp500 = createAsyncThunk(
       });
   }
 );
+
+
+// Watchlist: [],
+// isWatchlistFetching: false,
+// isWatchlistSuccess: false,
+// isWatchlistError: false
 
 export const DailySp500listSlice: any = createSlice({
   name: "DailySp500list",
@@ -155,6 +188,24 @@ export const DailySp500listSlice: any = createSlice({
       state.isFetching = false;
       state.isSuccess = false;
       state.isError = true;
+      state.status = "Error";
+      state.errorMessage = action?.payload?.message;
+    }),
+    builder.addCase(getWatchlist.pending, (state, action) => {
+      state.isWatchlistFetching = true;
+      state.isWatchlistSuccess = false;
+      state.status = "Loading...";
+    }),
+    builder.addCase(getWatchlist.fulfilled, (state, action) => {
+      state.status = "Success";
+      state.isWatchlistFetching = false;
+      state.isWatchlistSuccess = true;
+      state.Watchlist = action.payload;
+    }),
+    builder.addCase(getWatchlist.rejected, (state, action: any) => {
+      state.isWatchlistFetching = false;
+      state.isWatchlistSuccess = false;
+      state.isWatchlistError = true;
       state.status = "Error";
       state.errorMessage = action?.payload?.message;
     }),

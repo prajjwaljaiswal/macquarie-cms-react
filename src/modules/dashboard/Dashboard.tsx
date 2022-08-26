@@ -33,6 +33,12 @@ import DailyHsiDw from "./pages/DailyHsiDw/DailyHsiDw";
 import DailySingleStock from "./pages/DailySingleStock/DailySingleStock";
 import AllForeignIndex from "./pages/AllForeignIndex/AllForeignIndex";
 import Cautionlist from "./pages/caution-list/cautionList";
+import Dw28Update from "./pages/Dw28Update/Dw28Update";
+import DwInventory from "./pages/DwInventory/DwInventory";
+import DailyMarketAnalysis from "./pages/DailyMarketAnalysis/DailyMarketAnalysis";
+import DwSet50Tips from "./pages/DwSet50Tips/DwSet50Tips";
+import HotTopicReview from "./pages/HotTopicReview/HotTopicReview";
+import DwTipsBanner from "./pages/DwTipsBanner/DwTipsBanner";
 
 export default function Dashboard() {
   return (
@@ -55,6 +61,32 @@ export default function Dashboard() {
             exact
             path="/th_cms/dashboard/market-commentary"
             component={MarketCommentary}
+          />
+          <PrivateRoute
+            exact
+            path="/th_cms/dashboard/dw-inventory"
+            component={DwInventory}
+          />
+          <PrivateRoute
+            exact
+            path="/th_cms/dashboard/daily-market-analysis"
+            component={DailyMarketAnalysis}
+          />
+
+          <PrivateRoute
+            exact
+            path="/th_cms/dashboard/dw-set50-tips"
+            component={DwSet50Tips}
+          />
+          <PrivateRoute
+            exact
+            path="/th_cms/dashboard/dw-tips-banner"
+            component={DwTipsBanner}
+          />
+          <PrivateRoute
+            exact
+            path="/th_cms/dashboard/hot-topic-review"
+            component={HotTopicReview}
           />
           <PrivateRoute
             exact
@@ -110,6 +142,11 @@ export default function Dashboard() {
             exact
             path="/th_cms/dashboard/index-future"
             component={IndexFuture}
+          />
+          <PrivateRoute
+            exact
+            path="/th_cms/dashboard/dw28update"
+            component={Dw28Update}
           />
           <PrivateRoute
             exact

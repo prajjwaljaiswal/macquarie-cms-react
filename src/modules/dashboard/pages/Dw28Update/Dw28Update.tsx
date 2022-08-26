@@ -10,21 +10,22 @@ import {
   TextField,
   Typography,
   Button,
+  Fab,
 } from "@material-ui/core";
 import { DataGrid } from "@material-ui/data-grid";
-import { EditOutlined, DeleteOutline } from "@material-ui/icons";
+import { EditOutlined, DeleteOutline, CloudUpload } from "@material-ui/icons";
 import SearchBar from "material-ui-search-bar";
 import { useEffect, useState } from "react";
-import "./OvernightMarketWrap.css";
+import "./Dw28Update.css";
 import {
-  getOMWlist,
-  getOMWById,
-  insertOMW,
-  updateOMW,
-  deleteOMW,
-  OMWlistSelector,
+  getDw28Updatelist,
+  getDw28UpdateById,
+  insertDw28Update,
+  updateDw28Update,
+  deleteDw28Update,
+  Dw28UpdatelistSelector,
   clearState,
-} from "./OvernightMarketWrapSlice";
+} from "./Dw28UpdateSlice";
 import { loginSelector } from "../../../login/loginSlice";
 import { useDispatch, useSelector } from "react-redux";
 import dayjs from "dayjs";
@@ -52,37 +53,44 @@ const useStyles = makeStyles((theme) => ({
     marginRight: theme.spacing(1),
     width: "25ch",
   },
+  invisibleInput: {
+    display: "none",
+  },
   dataContainer: {
     height: "500px",
   },
+  imageUpload: {
+    width: "100%",
+  }
 }));
 
-export default function OvernightMarketWrap() {
+export default function Dw28Update() {
   const classes = useStyles();
   const dispatch = useDispatch();
   const { token } = useSelector(loginSelector);
   const {
-    OMWlist,
+    Dw28Updatelist,
     isSuccess,
-    isInsertOMWSuccess,
-    isUpdateOMWSuccess,
-    isDeleteOMWSuccess,
+    isInsertDw28UpdateSuccess,
+    isUpdateDw28UpdateSuccess,
+    isDeleteDw28UpdateSuccess,
     isError,
-    isInsertOMWError,
-    insertOMWErrorMessage,
-    isUpdateOMWError,
-    isDeleteOMWError,
-    updateOMWErrorMessage,
-    deleteOMWErrorMessage,
+    isInsertDw28UpdateError,
+    insertDw28UpdateErrorMessage,
+    isUpdateDw28UpdateError,
+    isDeleteDw28UpdateError,
+    updateDw28UpdateErrorMessage,
+    deleteDw28UpdateErrorMessage,
     isDataSuccess,
     isDataError,
-    OMWData,
-  } = useSelector(OMWlistSelector);
+    Dw28UpdateData,
+  } = useSelector(Dw28UpdatelistSelector);
   const [searchdata, setSearchdata] = useState<any>([]);
   const [data, setData] = useState<any>([]);
   const [searched, setSearched] = useState<string>("");
-  const [sEditor, setsEditor] = useState<CKEditorInstance>();
-  const [fEditor, setfEditor] = useState<CKEditorInstance>();
+  const [selectedFile, setSelectedFile] = useState("");
+  const [fileArrayBuffer, setFileArrayBuffer] = useState<any>();
+  const [image, setImage] = useState<any>("")
   const [editId, setEditId] = useState(0);
   const [button, setButton] = useState(true);
   const [pageSize, setPageSize] = useState<number>(10);
@@ -91,13 +99,13 @@ export default function OvernightMarketWrap() {
       defaultValues: {
         date: dayjs().format("YYYY-MM-DD"),
         title: "",
-        sContent: "",
-        fContent: "",
+        thai_title: "",
+        banner: "",
       },
     });
 
   useEffect(() => {
-    dispatch(getOMWlist({ token }));
+    dispatch(getDw28Updatelist({ token }));
 
     return () => {
       dispatch(clearState());
@@ -105,28 +113,28 @@ export default function OvernightMarketWrap() {
   }, []);
 
   useEffect(() => {
-    dispatch(getOMWlist({ token }));
+    dispatch(getDw28Updatelist({ token }));
 
-    if (isInsertOMWSuccess) {
+    if (isInsertDw28UpdateSuccess) {
       toast.success("Successfully saved.");
     }
 
-    if (isUpdateOMWSuccess) {
+    if (isUpdateDw28UpdateSuccess) {
       toast.success("Successfully updated.");
     }
 
-    if (isDeleteOMWSuccess) {
+    if (isDeleteDw28UpdateSuccess) {
       toast.success("Successfully deleted.");
     }
 
     dispatch(clearState());
-  }, [isInsertOMWSuccess, isUpdateOMWSuccess, isDeleteOMWSuccess]);
+  }, [isInsertDw28UpdateSuccess, isUpdateDw28UpdateSuccess, isDeleteDw28UpdateSuccess]);
 
   useEffect(() => {
     if (isSuccess) {
-      if(OMWlist){
-        setSearchdata(OMWlist);
-        setData(OMWlist);
+      setSearchdata(Dw28Updatelist);
+      if(Dw28Updatelist){
+        setData(Dw28Updatelist);
       }
     }
 
@@ -134,51 +142,50 @@ export default function OvernightMarketWrap() {
       toast.error(`Unable to load data list`);
       dispatch(clearState());
     }
-  }, [isSuccess, isError, OMWlist]);
+  }, [isSuccess, isError, Dw28Updatelist]);
 
   useEffect(() => {
     if (isDataSuccess) {
-      setValue("date", dayjs(OMWData.publish_date).format("YYYY-MM-DD"));
-      setValue("title", OMWData.en_title);
-      setValue("sContent", OMWData.en_short_content);
-      sEditor?.setData(OMWData.en_short_content);
-      setValue("fContent", OMWData.en_full_content);
-      fEditor?.setData(OMWData.en_full_content);
+      setValue("date", dayjs(Dw28UpdateData[0].publish_date).format("YYYY-MM-DD"));
+      setValue("title", Dw28UpdateData[0].en_title);
+      setValue("thai_title", Dw28UpdateData[0].thai_title);
       dispatch(clearState());
+      const arraybuffer = (Dw28UpdateData[0].image) ? Dw28UpdateData[0].image : "";
+      const base64String =Buffer.from(arraybuffer).toString("base64");
+        setFileArrayBuffer(arraybuffer);
+        setImage(`data:image/png;base64,${base64String}`);
     }
 
     if (isDataError) {
       toast.error(`Unable to retrieve data`);
       dispatch(clearState());
     }
-  }, [isDataSuccess, isDataError, OMWData]);
+  }, [isDataSuccess, isDataError, Dw28UpdateData]);
 
   useEffect(() => {
-    if (isInsertOMWError) {
+    if (isInsertDw28UpdateError) {
       toast.error(`Save failed`);
       dispatch(clearState());
     }
-    if (isUpdateOMWError) {
+    if (isUpdateDw28UpdateError) {
       toast.error(`Update failed`);
       dispatch(clearState());
     }
-    if (isDeleteOMWError) {
+    if (isDeleteDw28UpdateError) {
       toast.error(`Delete failed`);
       dispatch(clearState());
     }
-  }, [isInsertOMWError, isUpdateOMWError, isDeleteOMWError]);
+  }, [isInsertDw28UpdateError, isUpdateDw28UpdateError, isDeleteDw28UpdateError]);
 
   const handleEdit = (id: number) => {
-    dispatch(getOMWById({ token, id }));
+    dispatch(getDw28UpdateById({ token, id }));
     setButton(false);
     setEditId(id);
   };
 
   const handleDelete = (id: number) => {
-    dispatch(deleteOMW({ token, id }));
+    dispatch(deleteDw28Update({ token, id }));
     reset();
-    sEditor.setData();
-    fEditor.setData();
     setButton(true);
   };
 
@@ -201,22 +208,20 @@ export default function OvernightMarketWrap() {
     requestSearch(searched);
   };
 
-  const submitOMW = (e: any) => {
+  const submitDw28Update = (e: any) => {
     if (e.title) {
       dispatch(
-        insertOMW({
+        insertDw28Update({
           token,
           payload: {
             publish_date: e.date,
             en_title: e.title,
-            en_short_content: e.sContent,
-            en_full_content: e.fContent,
+            thai_title: e.thai_title,
+            image: (fileArrayBuffer) ? fileArrayBuffer : null
           },
         })
       );
       reset();
-      sEditor.setData();
-      fEditor.setData();
     } else {
       toast.error(`Please input title`);
     }
@@ -225,24 +230,42 @@ export default function OvernightMarketWrap() {
   const handleUpdate = () => {
     if (getValues("title")) {
       dispatch(
-        updateOMW({
+        updateDw28Update({
           token,
           id: editId,
           payload: {
             publish_date: getValues("date"),
             en_title: getValues("title"),
-            en_short_content: getValues("sContent"),
-            en_full_content: getValues("fContent"),
+            thai_title: getValues("thai_title"),
+            image: (fileArrayBuffer) ? fileArrayBuffer : null
           },
         })
       );
       reset();
-      sEditor.setData();
-      fEditor.setData();
       setButton(true);
     } else {
       toast.error(`Please input title`);
     }
+  };
+
+
+  const uploadTips = (e: any) => {
+    const file = e?.target?.files[0];
+    console.log(file);
+    if (!file) {
+      return setSelectedFile("");
+    }
+    setSelectedFile(file?.name);
+    let reader = new FileReader();
+    reader.onload = function (e) {
+      if (e?.target?.result) {
+        const arraybuffer = Buffer.from(e.target.result);
+        const base64String =Buffer.from(arraybuffer).toString("base64");
+        setFileArrayBuffer(arraybuffer);
+        setImage(`data:image/png;base64,${base64String}`);
+      }
+    };
+    reader.readAsArrayBuffer(file);
   };
 
   const columns = [
@@ -293,7 +316,7 @@ export default function OvernightMarketWrap() {
         <Grid container spacing={4}>
           <Grid container item xs={12} spacing={3}>
             <Grid item xs={12}>
-              <h2>Overnight Market Wrap</h2>
+              <h2>DW28 Update</h2>
             </Grid>
           </Grid>
           <Grid container item xs={12} spacing={5}>
@@ -301,7 +324,7 @@ export default function OvernightMarketWrap() {
               <form
                 className={classes.form}
                 noValidate
-                onSubmit={handleSubmit(submitOMW)}
+                onSubmit={handleSubmit(submitDw28Update)}
               >
                 <Grid item container xs={12} spacing={3}>
                   <Grid item xs={3}>
@@ -346,43 +369,71 @@ export default function OvernightMarketWrap() {
                     </FormControl>
                   </Grid>
 
+
                   <Grid item xs={3}>
-                    <Typography>Content (Preview):</Typography>
+                    <Typography>Title (Thai version):</Typography>
                   </Grid>
                   <Grid item xs={9}>
                     <FormControl fullWidth>
-                      <CKEditor
-                        onInstanceReady={({ editor }) => {
-                          setsEditor(editor);
-                        }}
-                        onChange={({ editor }) => {
-                          setValue(
-                            "sContent",
-                            editor.document.getBody().$.innerHTML
-                          );
-                        }}
+                      <Controller
+                        control={control}
+                        name="thai_title"
+                        render={({ field }) => (
+                          <TextField
+                            {...field}
+                            label="Title (Thai version)"
+                            fullWidth
+                            margin="normal"
+                          />
+                        )}
                       />
                     </FormControl>
                   </Grid>
 
+
                   <Grid item xs={3}>
-                    <Typography>Content (Full English version):</Typography>
+                  Banner Image:
                   </Grid>
                   <Grid item xs={9}>
-                    <FormControl fullWidth>
-                      <CKEditor
-                        onInstanceReady={({ editor }) => {
-                          setfEditor(editor);
-                        }}
-                        onChange={({ editor }) => {
-                          setValue(
-                            "fContent",
-                            editor.document.getBody().$.innerHTML
-                          );
-                        }}
-                      />
-                    </FormControl>
+                       <img src={image} className={classes.imageUpload} /> 
+                  </Grid>    
+
+                  <Grid item xs={3}>
+                   
                   </Grid>
+
+                  <Grid item xs={9}>
+                  <FormControl>
+                    <Controller
+                      name="banner"
+                      control={control}
+                      render={({ field }) => (
+                        <>
+                          <input
+                            accept="image/*"
+                            className={classes.invisibleInput}
+                            id="icon-button-file"
+                            type="file"
+                            onChange={uploadTips}
+                          />
+                          <label htmlFor="icon-button-file">
+                            <Fab
+                              color="secondary"
+                              size="small"
+                              component="span"
+                              aria-label="add"
+                              variant="extended"
+                            >
+                              <CloudUpload />
+                            </Fab>
+                            &nbsp;{" "}
+                            {selectedFile ? selectedFile : "No file chosen "}
+                          </label>
+                        </>
+                      )}
+                    />
+                  </FormControl>
+                </Grid>
 
                   <Grid item xs={3}></Grid>
                   <Grid item xs={9}>

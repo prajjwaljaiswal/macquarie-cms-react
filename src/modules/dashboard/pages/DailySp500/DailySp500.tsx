@@ -1,79 +1,81 @@
 import {
-    makeStyles,
-    Card,
-    Grid,
-    FormControl,
-    InputLabel,
-    Select,
-    Input,
-    MenuItem,
-    TextField,
-    Typography,
-    Button,
-    Checkbox,
-    Fab,
-  } from "@material-ui/core";
-  import { DataGrid } from "@material-ui/data-grid";
-  import { EditOutlined, DeleteOutline, CloudUpload } from "@material-ui/icons";
-  import SearchBar from "material-ui-search-bar";
-  import { useEffect, useState } from "react";
-  import "./DailySp500.css";
-  import {
-    getDailySp500list,
-    getDailySp500ById,
-    getDailySp500Search,
-    insertDailySp500,
-    updateDailySp500,
-    deleteDailySp500,
-    DailySp500listSelector,
-    clearState,
-    updateDailySp500Image,
-  } from "./DailySp500Slice";
-  import { loginSelector } from "../../../login/loginSlice";
-  import { useDispatch, useSelector } from "react-redux";
-  import dayjs from "dayjs";
-  import { CKEditor, CKEditorInstance } from "ckeditor4-react";
-  import { useForm, Controller } from "react-hook-form";
-  import toast, { Toaster } from "react-hot-toast";
+  makeStyles,
+  Card,
+  Grid,
+  FormControl,
+  InputLabel,
+  Select,
+  Input,
+  MenuItem,
+  TextField,
+  Typography,
+  Button,
+  Checkbox,
+  Fab,
+} from "@material-ui/core";
+import { DataGrid } from "@material-ui/data-grid";
+import { EditOutlined, DeleteOutline, CloudUpload } from "@material-ui/icons";
+import SearchBar from "material-ui-search-bar";
+import { useEffect, useState } from "react";
+import "./DailySp500.css";
+import {
+  getDailySp500list,
+  getDailySp500ById,
+  getDailySp500Search,
+  insertDailySp500,
+  updateDailySp500,
+  deleteDailySp500,
+  DailySp500listSelector,
+  clearState,
+  updateDailySp500Image,
+  getWatchlist,
+} from "./DailySp500Slice";
+import { loginSelector } from "../../../login/loginSlice";
+import { useDispatch, useSelector } from "react-redux";
+import dayjs from "dayjs";
+import { CKEditor, CKEditorInstance } from "ckeditor4-react";
+import { useForm, Controller } from "react-hook-form";
+import toast, { Toaster } from "react-hot-toast";
 import { Autocomplete } from "@material-ui/lab";
+import { AllHtmlEntities } from "html-entities";
 const api: string = process.env.REACT_APP_API_URL || "localhost:3015";
 
 
 const useStyles = makeStyles((theme) => ({
-    form: {
-      width: "100%", // Fix IE 11 issue.
-      marginTop: theme.spacing(1),
-    },
-    divider: {
-      margin: theme.spacing(2, 0),
-    },
-    cardLay: {
-      padding: "1em",
-    },
-    root: {
-      display: "flex",
-      flexWrap: "wrap",
-    },
-    invisibleInput: {
-      display: "none",
-    },
-    textField: {
-      marginLeft: theme.spacing(1),
-      marginRight: theme.spacing(1),
-      width: "25ch",
-    },
-    dataContainer: {
-      height: "500px",
-    },
-    imageUpload: {
-      width: "100%",
-    }
-  }));
+  form: {
+    width: "100%", // Fix IE 11 issue.
+    marginTop: theme.spacing(1),
+  },
+  divider: {
+    margin: theme.spacing(2, 0),
+  },
+  cardLay: {
+    padding: "1em",
+  },
+  root: {
+    display: "flex",
+    flexWrap: "wrap",
+  },
+  invisibleInput: {
+    display: "none",
+  },
+  textField: {
+    marginLeft: theme.spacing(1),
+    marginRight: theme.spacing(1),
+    width: "25ch",
+  },
+  dataContainer: {
+    height: "500px",
+  },
+  imageUpload: {
+    width: "100%",
+  }
+}));
 
 
 
 
-  export default function DailySp500() {    
+export default function DailySp500() {
   const classes = useStyles();
   const dispatch = useDispatch();
   const { token } = useSelector(loginSelector);
@@ -95,6 +97,8 @@ const useStyles = makeStyles((theme) => ({
     isDataSuccess,
     isDataError,
     DailySp500Data,
+    Watchlist,
+    isWatchlistSuccess
   } = useSelector(DailySp500listSelector);
   const [searchdata, setSearchdata] = useState<any>([]);
   const [data, setData] = useState<any>([]);
@@ -111,8 +115,13 @@ const useStyles = makeStyles((theme) => ({
   const [editId, setEditId] = useState(0);
   const [button, setButton] = useState(true);
   const [pageSize, setPageSize] = useState<number>(10);
-
+  const [selected, setSelection] = useState<any>([]);
+  const [dwId, setDwId] = useState<any>([]);
   const [checkbox, setCheckbox] = useState<boolean>(false);
+  const [ArrayData, setArrayData] = useState<any>([]);
+  const [notDeleted, setNotDelted] = useState<any>([]);
+  const [allric, setAllric] = useState<any>([]);
+  const [watchlistStr, setWatchlistStr] = useState<string>("");
 
   const { register, handleSubmit, control, setValue, getValues, reset } =
     useForm({
@@ -176,15 +185,44 @@ const useStyles = makeStyles((theme) => ({
       setValue("thai_title", DailySp500Data[0].thai_title);
       setValue("id", DailySp500Data[0].id);
       setValue("daily_sp500_status", DailySp500Data[0].daily_sp500_status);
-      setValue("en_short_content", (DailySp500Data[0].en_short_content) ? DailySp500Data[0].en_short_content : "" );
-      sEditor?.setData((DailySp500Data[0].en_short_content) ? DailySp500Data[0].en_short_content : "");
-      setValue("en_full_content", DailySp500Data[0].en_full_content);
-      fEditor?.setData(DailySp500Data[0].en_full_content);
-      setValue("thai_short_content", DailySp500Data[0].thai_short_content);
-      thaisEditor?.setData(DailySp500Data[0].thai_short_content);
-      setValue("thai_full_content", DailySp500Data[0].thai_full_content);
-      thaifEditor?.setData(DailySp500Data[0].thai_full_content);
-      dispatch(clearState());
+      setValue("en_short_content", (DailySp500Data[0].en_short_content) ? AllHtmlEntities.decode(DailySp500Data[0].en_short_content) : "");
+      sEditor?.setData((DailySp500Data[0].en_short_content) ? AllHtmlEntities.decode(DailySp500Data[0].en_short_content) : "");
+      setValue("en_full_content", AllHtmlEntities.decode(DailySp500Data[0].en_full_content));
+      fEditor?.setData(AllHtmlEntities.decode(DailySp500Data[0].en_full_content));
+      setValue("thai_short_content", AllHtmlEntities.decode(DailySp500Data[0].thai_short_content));
+      thaisEditor?.setData(AllHtmlEntities.decode(DailySp500Data[0].thai_short_content));
+      let h = AllHtmlEntities.decode(DailySp500Data[0].thai_full_content);
+      let thai_full_str = "";
+      console.log(AllHtmlEntities.decode("&lt;h1&gt;Hello &lt;/h1&gt;"), "encoded str");
+      if (h.indexOf("|") != -1) {
+        let thai_full_str = h.split("|")[1].split("<br>").join("\n");
+        thaifEditor?.setData(thai_full_str);
+        dispatch(clearState());
+        var list = h.split("|")[0].split(";");
+        let str = "";
+
+        for (var j = 0; j < list.length; j++) {
+          if (list[j] != null && list[j] != "") {
+            if (list[j].charAt(0) == '_') {
+              console.log("GET _ ", "", list[j]);
+            } else {
+              str += `'${list[j]}',`;
+              console.log("GET _ ", "", list[j]);
+            }
+          }
+        }
+
+        const allRic = str.slice(0, -1);
+        const payload = {
+          getRic: allRic,
+        };
+        dispatch(getWatchlist({ token, payload }))
+      } else {
+        thai_full_str = h.split("<br>").join("\n");
+        setValue("thai_full_content", thai_full_str);
+        thaifEditor?.setData(thai_full_str);
+        dispatch(clearState());
+      }
     }
 
     if (isDataError) {
@@ -213,12 +251,13 @@ const useStyles = makeStyles((theme) => ({
     setImage(`${api}/daily-sp-500/image/${id}`);
     setButton(false);
     setEditId(id);
+    setArrayData([]);
   };
 
   const handleSearch = (e: any) => {
-    const ric: string = e.target.value; 
-    dispatch(getDailySp500Search({token, ric}));
-    if(isDataSearchSuccess){
+    const ric: string = e.target.value;
+    dispatch(getDailySp500Search({ token, ric }));
+    if (isDataSearchSuccess) {
       console.log(DailySp500DataSearch);
       setSearchedSymbol(DailySp500DataSearch);
     }
@@ -236,7 +275,7 @@ const useStyles = makeStyles((theme) => ({
     reader.onload = function (e) {
       if (e?.target?.result) {
         const arraybuffer = Buffer.from(e.target.result);
-        const base64String =Buffer.from(arraybuffer).toString("base64");
+        const base64String = Buffer.from(arraybuffer).toString("base64");
         setFileArrayBuffer(arraybuffer);
         setImage(`data:image/png;base64,${base64String}`);
       }
@@ -274,7 +313,16 @@ const useStyles = makeStyles((theme) => ({
   };
 
   const submitDailySp500 = (e: any) => {
+    let thai_full_content = e.thai_full_content;
     if (e.title) {
+      let ric = "";
+      dwData.map((value: any, index: any) => {
+        ric += `${value.ric};`;
+      });
+
+      const ricSliced = ric.slice(0, -1);
+      thai_full_content = `${ricSliced}|${thai_full_content}`;
+
       dispatch(
         insertDailySp500({
           token,
@@ -283,10 +331,10 @@ const useStyles = makeStyles((theme) => ({
             daily_sp500_status: 1,
             en_title: e.title,
             thai_title: e.thai_title,
-            en_short_content: e.en_short_content,
-            en_full_content: e.en_full_content,
-            thai_short_content: e.thai_short_content,
-            thai_full_content: e.thai_full_content,
+            en_short_content: AllHtmlEntities.encode(e.en_short_content),
+            en_full_content: AllHtmlEntities.encode(e.en_full_content),
+            thai_short_content: AllHtmlEntities.encode(e.thai_short_content),
+            thai_full_content: AllHtmlEntities.encode(thai_full_content),
             image: fileArrayBuffer
           },
         })
@@ -297,6 +345,7 @@ const useStyles = makeStyles((theme) => ({
       fEditor.setData();
       thaisEditor.setData();
       thaifEditor.setData();
+      setArrayData([]);
       setImage("");
     } else {
       toast.error(`Please input symbol`);
@@ -305,6 +354,19 @@ const useStyles = makeStyles((theme) => ({
 
   const handleUpdate = () => {
     if (getValues("title")) {
+
+      let thai_full_content = getValues("thai_full_content");
+
+      let ric = "";
+      dwData.map((value: any, index: any) => {
+        ric += `${value.ric};`;
+      });
+
+      const ricSliced = ric.slice(0, -1);
+      thai_full_content = `${ricSliced}|${thai_full_content}`;
+
+      console.log(thai_full_content);
+
       dispatch(
         updateDailySp500({
           token,
@@ -315,29 +377,30 @@ const useStyles = makeStyles((theme) => ({
             daily_sp500_status: 1,
             en_title: getValues("title"),
             thai_title: getValues("thai_title"),
-            en_short_content: getValues("en_short_content"),
-            en_full_content: getValues("en_full_content"),
-            thai_short_content: getValues("thai_short_content"),
-            thai_full_content: getValues("thai_full_content"),
+            en_short_content: AllHtmlEntities.encode(getValues("en_short_content")),
+            en_full_content: AllHtmlEntities.encode(getValues("en_full_content")),
+            thai_short_content: AllHtmlEntities.encode(getValues("thai_short_content")),
+            thai_full_content: AllHtmlEntities.encode(thai_full_content),
           },
         })
       );
-      
-      if(fileArrayBuffer !== ""){
+
+      if (fileArrayBuffer !== "") {
         const id: number = getValues("id");
         let newPayload = {
           id: id,
           image: fileArrayBuffer
         }
-        dispatch(updateDailySp500Image({token, id, newPayload}));
+        dispatch(updateDailySp500Image({ token, id, newPayload }));
       }
-   
+
       reset();
       sEditor.setData();
       fEditor.setData();
       thaisEditor.setData();
       thaifEditor.setData();
       setImage("");
+      setArrayData([]);
       setButton(true);
     } else {
       toast.error(`Please input Title`);
@@ -349,7 +412,12 @@ const useStyles = makeStyles((theme) => ({
     {
       field: "id",
       headerName: "ID",
-      hide:true
+      hide: true
+    },
+    {
+      field: "ric",
+      headerName: "Ric",
+      hide: true
     },
     {
       field: "symbol",
@@ -374,7 +442,10 @@ const useStyles = makeStyles((theme) => ({
     {
       field: "last_trading_date",
       headerName: "Last Trading Date",
-      flex: 3
+      flex: 3,
+      renderCell: (params: any) => {
+        return dayjs(params.formattedValue).format("DD MMM YY");
+      },
     }
   ]
 
@@ -419,262 +490,342 @@ const useStyles = makeStyles((theme) => ({
     },
   ];
 
+  useEffect(() => {
+    if (isWatchlistSuccess) {
+      if (Watchlist) {
+        if (Watchlist.length > 1) {
+          setArrayData(Watchlist);
+        } else {
+          setArrayData([...ArrayData, Watchlist[0]]);
+        }
+      }
+
+    }
+  }, [isWatchlistSuccess]);
+
+  const handleRemove = () => {
+    var arr: Array<any> = []
+    let ric = "";
+    dwData.map((value: any, index: any) => {
+      if (dwId.indexOf(value.id) == -1) {
+        arr.push(value)
+        ric += `${value.ric};`;
+      }
+    })
+    const thai_full_content_str = getValues("thai_full_content");
+    let str = `${ric}|${thai_full_content_str}`;
+
+    setArrayData(arr);
+  };
+
 
   const insertInput = (e: any, value: any) => {
     const s = e.target.value;
-    console.log(value);
-    setValue("title", value);
+
+    const searchArray = searchedSymbol.filter((data: any) => data.symbol == value);
+    const { ric, symbol } = searchArray[0];
+
+    let payload = {};
+    let newSymbol = "";
+    if (symbol.charAt(0).indexOf("_") > -1) {
+      newSymbol = symbol.replace("_", "");
+      payload = {
+        ric: "",
+        symbol: newSymbol
+      };
+    } else {
+      payload = {
+        ric: ric,
+        symbol: ""
+      };
+    }
+
+    dispatch(getWatchlist({ token, payload }))
+
   }
 
 
+  const selectedChecksChangeHandler = (ids: any) => {
+    setDwId(ids);
+  }
 
-    return (
-        <>
-        <div className="today-top-pick">
+  useEffect(() => {
+    console.log(ArrayData);
+    let arr: any = []
+    ArrayData.map((data: any, i: any) => {
+      const finalData = {
+        id: i,
+        ...data
+      }
+      arr[i] = finalData;
+    })
+    console.log(arr);
+    if (ArrayData) {
+      setDwData(arr);
+    }
+
+  }, [ArrayData])
+
+
+  return (
+    <>
+      <div className="today-top-pick">
         <Toaster />
-      <Card className={classes.cardLay} variant="outlined">
-        <Grid container spacing={4}>
-          <Grid container item xs={12} spacing={3}>
-            <Grid item xs={12}>
-              <h2>Daily S&P500 DW update</h2>
+        <Card className={classes.cardLay} variant="outlined">
+          <Grid container spacing={4}>
+            <Grid container item xs={12} spacing={3}>
+              <Grid item xs={12}>
+                <h2>Daily S&P500 DW update</h2>
+              </Grid>
             </Grid>
-          </Grid>
-          <Grid container item xs={12} spacing={5}>
-            <Grid item container xs={12} spacing={0}>
-              <form
-                className={classes.form}
-                noValidate
-                onSubmit={handleSubmit(submitDailySp500)}
-              >
-                <Grid item container xs={12} spacing={3}>
-                  <Grid item xs={3}>
-                    <Typography>Publish Date:</Typography>
-                  </Grid>
-                  <Grid item xs={9}>
-                    <FormControl fullWidth>
-                      <Controller
-                        control={control}
-                        name="date"
-                        render={({ field }) => (
-                          <TextField
-                            {...field}
-                            id="datetime-local"
-                            label="Publish Date:"
-                            type="date"
-                            InputLabelProps={{
-                              shrink: true,
-                            }}
-                          />
-                        )}
-                      />
-                    </FormControl>
-                  </Grid>
-                  <Grid item xs={3}>
-                    <Typography>Title (English version):</Typography>
-                  </Grid>
-                  <Grid item xs={9}>
-                    <FormControl fullWidth>
-                      <Controller
-                        control={control}
-                        name="title"
-                        render={({ field }) => (
-                          <TextField
-                            {...field}
-                            label="Title (English version)"
-                            fullWidth
-                            margin="normal"
-                          />
-                        )}
-                      />
-                    </FormControl>
-                  </Grid>
-
-                  <Grid item xs={3}>
-                    <Typography>Title (Thai version):</Typography>
-                  </Grid>
-                  <Grid item xs={9}>
-                    <FormControl fullWidth>
-                      <Controller
-                        control={control}
-                        name="thai_title"
-                        render={({ field }) => (
-                          <TextField
-                            {...field}
-                            label="Title (Thai version)"
-                            fullWidth
-                            margin="normal"
-                          />
-                        )}
-                      />
-                    </FormControl>
-                  </Grid>
-
-
-                  <Grid item xs={3}>
-                    <Typography>
-                    Add an existing DW::
-                    </Typography>
-                  </Grid>
-                  <Grid item xs={9}>
+            <Grid container item xs={12} spacing={5}>
+              <Grid item container xs={12} spacing={0}>
+                <form
+                  className={classes.form}
+                  noValidate
+                  onSubmit={handleSubmit(submitDailySp500)}
+                >
+                  <Grid item container xs={12} spacing={3}>
+                    <Grid item xs={3}>
+                      <Typography>Publish Date:</Typography>
+                    </Grid>
+                    <Grid item xs={9}>
                       <FormControl fullWidth>
-                      <Autocomplete
-                            onChange={insertInput}
-                            freeSolo
-                            disableClearable
-                            options={searchedSymbol.map((option: any) => option.symbol)}
-                            renderInput={(params) => (
-                              <TextField
-                                name="symbol"
-                                onInput={handleSearch}
-                                {...params}
-                                label="Add an existing DW"
-                                InputProps={{
-                                  ...params.InputProps,
-                                  type: 'search',
-                                }}
-                              />
-                            )}
-                          />
+                        <Controller
+                          control={control}
+                          name="date"
+                          render={({ field }) => (
+                            <TextField
+                              {...field}
+                              id="datetime-local"
+                              label="Publish Date:"
+                              type="date"
+                              InputLabelProps={{
+                                shrink: true,
+                              }}
+                            />
+                          )}
+                        />
                       </FormControl>
-                  </Grid>
-                  
-                  {/* <Grid container item xs={12} className={classes.dataContainer}>
-                <DataGrid
-                  rows={dwData}
-                  columns={dwcolumns}
-                  pageSize={pageSize}
-                  onPageSizeChange={pageSize => setPageSize(pageSize)}
-                  rowsPerPageOptions={[10, 25, 50, 100]}
-                  checkboxSelection
-                  disableSelectionOnClick
-                  componentsProps={{
-                    pagination: {
-                      labelRowsPerPage: "Entries per page:",
-                    },
-                  }}
-                />
-              </Grid> */}
+                    </Grid>
+                    <Grid item xs={3}>
+                      <Typography>Title (English version):</Typography>
+                    </Grid>
+                    <Grid item xs={9}>
+                      <FormControl fullWidth>
+                        <Controller
+                          control={control}
+                          name="title"
+                          render={({ field }) => (
+                            <TextField
+                              {...field}
+                              label="Title (English version)"
+                              fullWidth
+                              margin="normal"
+                            />
+                          )}
+                        />
+                      </FormControl>
+                    </Grid>
 
-                  <Grid item xs={3}>
-                    <Typography>Content (Short English Version):</Typography>
-                  </Grid>
-                  <Grid item xs={9}>
-                    <FormControl fullWidth>
-                      <CKEditor
-                        onInstanceReady={({ editor }) => {
-                          setsEditor(editor);
+                    <Grid item xs={3}>
+                      <Typography>Title (Thai version):</Typography>
+                    </Grid>
+                    <Grid item xs={9}>
+                      <FormControl fullWidth>
+                        <Controller
+                          control={control}
+                          name="thai_title"
+                          render={({ field }) => (
+                            <TextField
+                              {...field}
+                              label="Title (Thai version)"
+                              fullWidth
+                              margin="normal"
+                            />
+                          )}
+                        />
+                      </FormControl>
+                    </Grid>
+
+
+                    <Grid item xs={3}>
+                      <Typography>
+                        Add an existing DW::
+                      </Typography>
+                    </Grid>
+                    <Grid item xs={9}>
+                      <FormControl fullWidth>
+                        <Autocomplete
+                          onChange={insertInput}
+                          freeSolo
+                          disableClearable
+                          options={searchedSymbol.map((option: any) => option.symbol)}
+                          renderInput={(params) => (
+                            <TextField
+                              name="symbol"
+                              onInput={handleSearch}
+                              {...params}
+                              label="Add an existing DW"
+                              InputProps={{
+                                ...params.InputProps,
+                                type: 'search',
+                              }}
+                            />
+                          )}
+                        />
+                      </FormControl>
+                    </Grid>
+
+                    <Grid item xs={3}>
+                      {(dwId.length) > 0 ? (<Button
+                        style={{ marginLeft: "2px", width: "49%", backgroundColor: "rgba(63, 81, 181, 0.08)", }}
+                        variant="contained"
+                        onClick={handleRemove}
+                      >
+                        Remove
+                      </Button>) : ("")}
+                    </Grid>
+                    <Grid container item xs={9} className={classes.dataContainer}>
+                      <DataGrid
+                        rows={dwData}
+                        columns={dwcolumns}
+                        pageSize={pageSize}
+                        onPageSizeChange={pageSize => setPageSize(pageSize)}
+                        rowsPerPageOptions={[10, 25, 50, 100]}
+                        onSelectionModelChange={(ids) => {
+                          selectedChecksChangeHandler(ids);
                         }}
-                        onChange={({ editor }) => {
-                          setValue(
-                            "en_short_content",
-                            editor.document.getBody().$.innerHTML
-                          );
+                        checkboxSelection
+                        disableSelectionOnClick
+                        componentsProps={{
+                          pagination: {
+                            labelRowsPerPage: "Entries per page:",
+                          },
                         }}
                       />
-                    </FormControl>
-                  </Grid>
+                    </Grid>
 
-                  <Grid item xs={3}>
-                    <Typography>Content (Full English version):</Typography>
-                  </Grid>
-                  <Grid item xs={9}>
-                    <FormControl fullWidth>
-                      <CKEditor
-                        onInstanceReady={({ editor }) => {
-                          setfEditor(editor);
-                        }}
-                        onChange={({ editor }) => {
-                          setValue(
-                            "en_full_content",
-                            editor.document.getBody().$.innerHTML
-                          );
-                        }}
-                      />
-                    </FormControl>
-                  </Grid>
+                    <Grid item xs={3}>
+                      <Typography>Content (Short English Version):</Typography>
+                    </Grid>
+                    <Grid item xs={9}>
+                      <FormControl fullWidth>
+                        <CKEditor
+                          onInstanceReady={({ editor }) => {
+                            setsEditor(editor);
+                          }}
+                          onChange={({ editor }) => {
+                            setValue(
+                              "en_short_content",
+                              editor.document.getBody().$.innerHTML
+                            );
+                          }}
+                        />
+                      </FormControl>
+                    </Grid>
+
+                    <Grid item xs={3}>
+                      <Typography>Content (Full English version):</Typography>
+                    </Grid>
+                    <Grid item xs={9}>
+                      <FormControl fullWidth>
+                        <CKEditor
+                          onInstanceReady={({ editor }) => {
+                            setfEditor(editor);
+                          }}
+                          onChange={({ editor }) => {
+                            setValue(
+                              "en_full_content",
+                              editor.document.getBody().$.innerHTML
+                            );
+                          }}
+                        />
+                      </FormControl>
+                    </Grid>
 
 
-                  <Grid item xs={3}>
-                    <Typography>Content (Short Thai version):</Typography>
-                  </Grid>
-                  <Grid item xs={9}>
-                    <FormControl fullWidth>
-                      <CKEditor
-                        onInstanceReady={({ editor }) => {
-                          setthaisEditor(editor);
-                        }}
-                        onChange={({ editor }) => {
-                          setValue(
-                            "thai_short_content",
-                            editor.document.getBody().$.innerHTML
-                          );
-                        }}
-                      />
-                    </FormControl>
-                  </Grid>
+                    <Grid item xs={3}>
+                      <Typography>Content (Short Thai version):</Typography>
+                    </Grid>
+                    <Grid item xs={9}>
+                      <FormControl fullWidth>
+                        <CKEditor
+                          onInstanceReady={({ editor }) => {
+                            setthaisEditor(editor);
+                          }}
+                          onChange={({ editor }) => {
+                            setValue(
+                              "thai_short_content",
+                              editor.document.getBody().$.innerHTML
+                            );
+                          }}
+                        />
+                      </FormControl>
+                    </Grid>
 
-                  <Grid item xs={3}>
-                    <Typography>Content (Full Thai version):</Typography>
-                  </Grid>
-                  <Grid item xs={9}>
-                    <FormControl fullWidth>
-                      <CKEditor
-                        onInstanceReady={({ editor }) => {
-                          setthaifEditor(editor);
-                        }}
-                        onChange={({ editor }) => {
-                          setValue(
-                            "thai_full_content",
-                            editor.document.getBody().$.innerHTML
-                          );
-                        }}
-                      />
-                    </FormControl>
-                  </Grid>
+                    <Grid item xs={3}>
+                      <Typography>Content (Full Thai version):</Typography>
+                    </Grid>
+                    <Grid item xs={9}>
+                      <FormControl fullWidth>
+                        <CKEditor
+                          onInstanceReady={({ editor }) => {
+                            setthaifEditor(editor);
+                          }}
+                          onChange={({ editor }) => {
+                            setValue(
+                              "thai_full_content",
+                              editor.document.getBody().$.innerHTML
+                            );
+                          }}
+                        />
+                      </FormControl>
+                    </Grid>
 
-                  <Grid item xs={3}></Grid>
-                  <Grid item xs={9}>
-                       <img src={image} className={classes.imageUpload} /> 
-                  </Grid>    
+                    <Grid item xs={3}></Grid>
+                    <Grid item xs={9}>
+                      <img src={image} className={classes.imageUpload} />
+                    </Grid>
 
-                  <Grid item xs={3}>
-                    Upload Image:
-                  </Grid>
+                    <Grid item xs={3}>
+                      Upload Image:
+                    </Grid>
 
-                  <Grid item xs={9}>
-                  <FormControl>
-                    <Controller
-                      name="banner"
-                      control={control}
-                      render={({ field }) => (
-                        <>
-                          <input
-                            accept="image/*"
-                            className={classes.invisibleInput}
-                            id="icon-button-file"
-                            type="file"
-                            onChange={uploadTips}
-                          />
-                          <label htmlFor="icon-button-file">
-                            <Fab
-                              color="secondary"
-                              size="small"
-                              component="span"
-                              aria-label="add"
-                              variant="extended"
-                            >
-                              <CloudUpload />
-                            </Fab>
-                            &nbsp;{" "}
-                            {selectedFile ? selectedFile : "No file chosen "}
-                          </label>
-                        </>
-                      )}
-                    />
-                  </FormControl>
-                </Grid>
+                    <Grid item xs={9}>
+                      <FormControl>
+                        <Controller
+                          name="banner"
+                          control={control}
+                          render={({ field }) => (
+                            <>
+                              <input
+                                accept="image/*"
+                                className={classes.invisibleInput}
+                                id="icon-button-file"
+                                type="file"
+                                onChange={uploadTips}
+                              />
+                              <label htmlFor="icon-button-file">
+                                <Fab
+                                  color="secondary"
+                                  size="small"
+                                  component="span"
+                                  aria-label="add"
+                                  variant="extended"
+                                >
+                                  <CloudUpload />
+                                </Fab>
+                                &nbsp;{" "}
+                                {selectedFile ? selectedFile : "No file chosen "}
+                              </label>
+                            </>
+                          )}
+                        />
+                      </FormControl>
+                    </Grid>
 
-                  {/* <Grid item xs={3}></Grid>
+                    {/* <Grid item xs={3}></Grid>
                   <Grid item xs={9}>
                   <Button
                         variant="contained"
@@ -690,63 +841,63 @@ const useStyles = makeStyles((theme) => ({
                     </Button>
                   </Grid> */}
 
-                  <Grid item xs={3}></Grid>
-                  <Grid item xs={9}>
-                    {button && (
-                      <Button
-                        type="submit"
-                        fullWidth
-                        variant="contained"
-                        color="primary"
-                      >
-                        New
-                      </Button>
-                    )}
-                    {!button && (
-                      <Button
-                        fullWidth
-                        variant="contained"
-                        color="primary"
-                        onClick={handleUpdate}
-                      >
-                        Update
-                      </Button>
-                    )}
+                    <Grid item xs={3}></Grid>
+                    <Grid item xs={9}>
+                      {button && (
+                        <Button
+                          type="submit"
+                          fullWidth
+                          variant="contained"
+                          color="primary"
+                        >
+                          New
+                        </Button>
+                      )}
+                      {!button && (
+                        <Button
+                          fullWidth
+                          variant="contained"
+                          color="primary"
+                          onClick={handleUpdate}
+                        >
+                          Update
+                        </Button>
+                      )}
+                    </Grid>
+                  </Grid>
+                </form>
+              </Grid>
+            </Grid>
+            <Grid container item xs={12} spacing={5}>
+              <Grid item container xs={12} spacing={3}>
+                <Grid container item justifyContent="flex-end">
+                  <Grid item xs={4}>
+                    <SearchBar
+                      value={searched}
+                      onChange={(searchVal) => requestSearch(searchVal)}
+                      onCancelSearch={() => cancelSearch()}
+                    />
                   </Grid>
                 </Grid>
-              </form>
-            </Grid>
-          </Grid>
-          <Grid container item xs={12} spacing={5}>
-            <Grid item container xs={12} spacing={3}>
-              <Grid container item justifyContent="flex-end">
-                <Grid item xs={4}>
-                  <SearchBar
-                    value={searched}
-                    onChange={(searchVal) => requestSearch(searchVal)}
-                    onCancelSearch={() => cancelSearch()}
+                <Grid container item xs={12} className={classes.dataContainer}>
+                  <DataGrid
+                    rows={data}
+                    columns={columns}
+                    pageSize={pageSize}
+                    onPageSizeChange={pageSize => setPageSize(pageSize)}
+                    rowsPerPageOptions={[10, 25, 50, 100]}
+                    componentsProps={{
+                      pagination: {
+                        labelRowsPerPage: "Entries per page:",
+                      },
+                    }}
                   />
                 </Grid>
               </Grid>
-              <Grid container item xs={12} className={classes.dataContainer}>
-                <DataGrid
-                  rows={data}
-                  columns={columns}
-                  pageSize={pageSize}
-                  onPageSizeChange={pageSize => setPageSize(pageSize)}
-                  rowsPerPageOptions={[10, 25, 50, 100]}
-                  componentsProps={{
-                    pagination: {
-                      labelRowsPerPage: "Entries per page:",
-                    },
-                  }}
-                />
-              </Grid>
             </Grid>
           </Grid>
-        </Grid>
-      </Card>
+        </Card>
       </div>
     </>
-    )
+  )
 }

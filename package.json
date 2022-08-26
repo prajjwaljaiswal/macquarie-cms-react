@@ -16,6 +16,7 @@
     "@types/node": "^12.0.0",
     "@types/react": "^17.0.0",
     "@types/react-dom": "^17.0.0",
+    "caniuse-lite": "^1.0.30001378",
     "ckeditor4-react": "^2.0.1",
     "dayjs": "^1.10.6",
     "ip": "^1.1.5",

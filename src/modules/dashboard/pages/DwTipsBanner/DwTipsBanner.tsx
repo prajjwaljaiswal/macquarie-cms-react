@@ -19,16 +19,16 @@ import {
 import { CloudUpload } from "@material-ui/icons";
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
-import "./HomeBanner.css";
+import "./DwTipsBanner.css";
 import {
-  getHomeBannerlist,
-  getHomeBannerById,
-  createHomeBanner,
-  updateHomeBanner,
-  deleteHomeBanner,
-  HomeBannerSelector,
+  getDwTipsBannerlist,
+  getDwTipsBannerById,
+  createDwTipsBanner,
+  updateDwTipsBanner,
+  deleteDwTipsBanner,
+  DwTipsBannerSelector,
   clearState,
-} from "./HomeBannerSlice";
+} from "./DwTipsBannerSlice";
 import { loginSelector } from "../../../login/loginSlice";
 import { useDispatch, useSelector } from "react-redux";
 import toast, { Toaster } from "react-hot-toast";
@@ -89,39 +89,39 @@ type idList = {
   order: number;
 };
 
-export default function HomeBanner() {
+export default function DwTipsBanner() {
   const classes = useStyles();
-  const [banner, setBanner] = useState("");
   const { register, handleSubmit, control, setValue, getValues, reset } =
     useForm({
       defaultValues: {
-        order: 0,
+        order: 1,
         link: "",
-        banner: `${api}/file/image/homebanner/0`,
+        redirect: false,
+        banner: null,
       },
     });
   const dispatch = useDispatch();
   const { token } = useSelector(loginSelector);
   const {
-    HomeBannerlist,
+    DwTipsBannerlist,
     isListSuccess,
     isListError,
-    HomeBanner,
+    DwTipsBanner,
     isBannerSuccess,
     isBannerError,
-    isCreateHomeBannerSuccess,
-    isCreateHomeBannerError,
-    createHomeBannerErrorMessage,
-    isUpdateHomeBannerSuccess,
-    isUpdateHomeBannerError,
-    updateHomeBannerErrorMessage,
-    isDeleteHomeBannerSuccess,
-    isDeleteHomeBannerError,
-    deleteHomeBannerErrorMessage,
-  } = useSelector(HomeBannerSelector);
+    isCreateDwTipsBannerSuccess,
+    isCreateDwTipsBannerError,
+    createDwTipsBannerErrorMessage,
+    isUpdateDwTipsBannerSuccess,
+    isUpdateDwTipsBannerError,
+    updateDwTipsBannerErrorMessage,
+    isDeleteDwTipsBannerSuccess,
+    isDeleteDwTipsBannerError,
+    deleteDwTipsBannerErrorMessage,
+  } = useSelector(DwTipsBannerSelector);
   const [selectedFile, setSelectedFile] = useState("");
   const [idList, setIdList] = useState<number[]>([]);
-  const [data, setData] = useState<any>();
+  const [banner, setBanner] = useState("");
   const [fileArrayBuffer, setFileArrayBuffer] = useState<ArrayBuffer>();
   const [id, setId] = useState(0);
   const ITEM_HEIGHT = 48;
@@ -136,7 +136,7 @@ export default function HomeBanner() {
   };
 
   useEffect(() => {
-    dispatch(getHomeBannerlist({ token }));
+    dispatch(getDwTipsBannerlist({ token }));
 
     return () => {
       dispatch(clearState());
@@ -145,88 +145,93 @@ export default function HomeBanner() {
 
   useEffect(() => {
     if (isListSuccess) {
-      setIdList(HomeBannerlist.map((data: any) => data.id));
-      setData(HomeBannerlist);
-      dispatch(getHomeBannerById({ token, id: 0 }));
+      setIdList(
+        DwTipsBannerlist.reduce((newlist: number[], data: idList) => {
+          newlist[data.order - 1] = data.id;
+          return [...newlist];
+        }, [])
+      );
     }
 
     if (isListError) {
       toast.error("Unable to the banner list");
     }
-  }, [isListSuccess, isListError, HomeBannerlist]);
+  }, [isListSuccess, isListError, DwTipsBannerlist]);
 
   useEffect(() => {
     if (isBannerSuccess) {
-      setValue("link", HomeBanner.link);
+      setValue("link", DwTipsBanner.link);
+      setValue("redirect", DwTipsBanner.redirect_type ? true : false);
     }
     dispatch(clearState());
-  }, [isBannerSuccess, isBannerError, HomeBanner]);
+  }, [isBannerSuccess, isBannerError, DwTipsBanner]);
 
   useEffect(() => {
     if (
-      isCreateHomeBannerSuccess ||
-      isUpdateHomeBannerSuccess ||
-      isDeleteHomeBannerSuccess
+      isCreateDwTipsBannerSuccess ||
+      isUpdateDwTipsBannerSuccess ||
+      isDeleteDwTipsBannerSuccess
     ) {
-      dispatch(getHomeBannerlist({ token }));
+      dispatch(getDwTipsBannerlist({ token }));
       reset();
       setSelectedFile("");
     }
 
-    if (isCreateHomeBannerSuccess) {
+    if (isCreateDwTipsBannerSuccess) {
       toast.success("Successfully saved.");
     }
 
-    if (isUpdateHomeBannerSuccess) {
+    if (isUpdateDwTipsBannerSuccess) {
       toast.success("Successfully updated.");
       location.reload();
     }
 
-    if (isDeleteHomeBannerSuccess) {
+    if (isDeleteDwTipsBannerSuccess) {
       toast.success("Successfully deleted.");
     }
 
-    if (isCreateHomeBannerError) {
+    if (isCreateDwTipsBannerError) {
       toast.error(`Save failed`);
     }
 
-    if (isUpdateHomeBannerError) {
+    if (isUpdateDwTipsBannerError) {
       toast.error(`Update failed`);
     }
 
-    if (isDeleteHomeBannerError) {
+    if (isDeleteDwTipsBannerError) {
       toast.error(`Delete failed`);
     }
     dispatch(clearState());
   }, [
-    isCreateHomeBannerSuccess,
-    isCreateHomeBannerError,
-    isUpdateHomeBannerSuccess,
-    isUpdateHomeBannerError,
-    isDeleteHomeBannerSuccess,
-    isDeleteHomeBannerError,
+    isCreateDwTipsBannerSuccess,
+    isCreateDwTipsBannerError,
+    isUpdateDwTipsBannerSuccess,
+    isUpdateDwTipsBannerError,
+    isDeleteDwTipsBannerSuccess,
+    isDeleteDwTipsBannerError,
   ]);
 
-  // useMemo(() => {
-  //   if (idList[0]) {
-  //     setId(idList[0]);
-  //     setBanner(`${api}/file/image/homebanner/${idList[0]}`);
-  //     dispatch(getHomeBannerById({ token, id: idList[0] }));
-  //   } else {
-  //     setBanner("");
-  //     setId(0);
-  //   }
-  // }, [idList]);
+  useMemo(() => {
+    if (idList[0]) {
+      setId(idList[0]);
+      setBanner(`${api}/file/image/DwTipsBanner/${idList[0]}`);
+      dispatch(getDwTipsBannerById({ token, id: idList[0] }));
+    } else {
+      setBanner("");
+      setId(0);
+    }
+  }, [idList]);
 
   const handleUpdate = (data: any) => {
     dispatch(
-      updateHomeBanner({
+      updateDwTipsBanner({
         token,
         id,
         payload: {
-          id: getValues("order"),
-          desktop_link: getValues("link"),
-          desktop_image: fileArrayBuffer ? fileArrayBuffer : null,
+          order: getValues("order"),
+          link: getValues("link"),
+          redirect_type: getValues("redirect") ? 1 : 0,
+          image: fileArrayBuffer ? fileArrayBuffer : null,
         },
       })
     );
@@ -234,12 +239,13 @@ export default function HomeBanner() {
 
   const handleSave = (data: any) => {
     dispatch(
-      createHomeBanner({
+      createDwTipsBanner({
         token,
         id,
         payload: {
           order: getValues("order"),
           link: getValues("link"),
+          redirect_type: getValues("redirect") ? 1 : 0,
           image: fileArrayBuffer ? fileArrayBuffer : null,
         },
       })
@@ -247,7 +253,7 @@ export default function HomeBanner() {
   };
 
   const handleDelete = () => {
-    dispatch(deleteHomeBanner({ token, id }));
+    dispatch(deleteDwTipsBanner({ token, id }));
   };
 
   const uploadTips = (e: any) => {
@@ -268,20 +274,25 @@ export default function HomeBanner() {
   };
 
   const handleImageChange = (order: any) => {
-      setId(idList[order]);
-      setBanner(`${api}/file/image/homebanner/${order}`);
-      const fetchLink:any = data[order];
-      setValue("link", fetchLink.desktop_link);
+    if (idList[order - 1]) {
+      setId(idList[order - 1]);
+      setBanner(`${api}/file/image/DwTipsBanner/${idList[order - 1]}`);
+      dispatch(getDwTipsBannerById({ token, id: idList[order - 1] }));
+    } else {
+      setId(0);
+      setBanner("");
+      setValue("link", "");
+      setValue("redirect", false);
+    }
   };
-
   return (
-    <div className="home-banner">
+    <div className="ad-banner">
       <Toaster />
       <Card className={classes.cardLay} variant="outlined">
         <Grid container spacing={4}>
           <Grid container item xs={12} spacing={3}>
             <Grid item xs={12}>
-              <h2>Home Banner</h2>
+              <h2>DW Tips Banner</h2>
             </Grid>
           </Grid>
         </Grid>
@@ -308,11 +319,10 @@ export default function HomeBanner() {
                             handleImageChange(e.target.value);
                           }}
                         >
-                          {[0, 1, 2, 3, 4, 5].map(
+                          {[...Array.from({ length: 10 }, (_, i) => i + 1)].map(
                             (value, index) => (
-
                               <MenuItem key={index} value={value}>
-                                {value === 1 || value === 3 || value === 5  ? "Mobile Banner " + (value) : "Desktop Banner "+value}
+                                {value === 6 || value === 7 || value === 8 || value === 9 || value === 10  ? "Not display - " + (value - 5) : value}
                               </MenuItem>
                             )
                           )}
@@ -323,17 +333,15 @@ export default function HomeBanner() {
                 </Grid>
                 <Grid item xs={3}>
                   <Typography>Banner:</Typography>
-                  <Typography>(Desk Recommended size: 1600x450)</Typography>
-                  <Typography>(Mobile Recommended size: 766x373)</Typography>
+                  <Typography>(Recommended size: 580x526)</Typography>
                 </Grid>
                 <Grid item xs={9}>
                   {banner ? (
                     <img className={classes.img} src={banner} />
                   ) : (
-                    <img className={classes.img} src={`${api}/file/image/homebanner/0`} />
+                    <img className={classes.img} src="../000000.jpg" />
                   )}
                 </Grid>
-                
                 <Grid item xs={3}>
                   <Typography>Hyperlink:</Typography>
                 </Grid>
@@ -343,7 +351,31 @@ export default function HomeBanner() {
                       control={control}
                       name="link"
                       render={({ field }) => (
-                        <TextField {...field} />
+                        <TextField {...field} label="URL" />
+                      )}
+                    />
+                  </FormControl>
+                </Grid>
+                <Grid item xs={3}>
+                  <Typography>Redirect:</Typography>
+                </Grid>
+                <Grid item xs={9}>
+                  <FormControl fullWidth>
+                    <Controller
+                      control={control}
+                      name="redirect"
+                      render={({ field }) => (
+                        <ListItem dense button>
+                          <ListItemIcon>
+                            <Checkbox
+                              {...field}
+                              edge="start"
+                              tabIndex={-1}
+                              checked={field.value}
+                              disableRipple
+                            />
+                          </ListItemIcon>
+                        </ListItem>
                       )}
                     />
                   </FormControl>
@@ -383,7 +415,6 @@ export default function HomeBanner() {
                     />
                   </FormControl>
                 </Grid>
-                
                 <Grid item xs={3}></Grid>
                 <Grid item xs={9}>
                   {id ? (

@@ -121,7 +121,7 @@ const Login = () => {
       <CssBaseline />
       <Toaster />
       <div className={classes.paper}>
-        <img src="./logo.png" />
+        <img src="../../../th_cms/logo.png" />
 
         <form
           className={classes.form}

@@ -23,6 +23,12 @@ import DailyHsiDwSlice from "../modules/dashboard/pages/DailyHsiDw/DailyHsiDwSli
 import DailySingleStockSlice from "../modules/dashboard/pages/DailySingleStock/DailySingleStockSlice";
 import AllForeignIndexSlice from "../modules/dashboard/pages/AllForeignIndex/AllForeignIndexSlice";
 import cautionSlice from "../modules/dashboard/pages/caution-list/cautionSlice";
+import Dw28UpdateSlice from "../modules/dashboard/pages/Dw28Update/Dw28UpdateSlice";
+import DwInventorySlice from "../modules/dashboard/pages/DwInventory/DwInventorySlice";
+import DailyMarketAnalysisSlice from "../modules/dashboard/pages/DailyMarketAnalysis/DailyMarketAnalysisSlice";
+import DwSet50TipsSlice from "../modules/dashboard/pages/DwSet50Tips/DwSet50TipsSlice";
+import HotTopicReviewSlice from "../modules/dashboard/pages/HotTopicReview/HotTopicReviewSlice";
+import DwTipsBannerSlice from "../modules/dashboard/pages/DwTipsBanner/DwTipsBannerSlice";
 
 const initState = {
   reducer: {
@@ -49,7 +55,13 @@ const initState = {
     MarketCommentarylist: MarketCommentarySlice,
     DailyHsiDwlist: DailyHsiDwSlice,
     DailySingleStocklist: DailySingleStockSlice,
-    AllForeignIndexlist: AllForeignIndexSlice
+    AllForeignIndexlist: AllForeignIndexSlice,
+    Dw28Updatelist: Dw28UpdateSlice,
+    DwInventorylist: DwInventorySlice,
+    DailyMarketAnalysislist: DailyMarketAnalysisSlice,
+    DwSet50Tipslist: DwSet50TipsSlice,
+    HotTopicReviewlist: HotTopicReviewSlice,
+    DwTipsBannerlist: DwTipsBannerSlice
   },
 };
 const store = configureStore(initState);
