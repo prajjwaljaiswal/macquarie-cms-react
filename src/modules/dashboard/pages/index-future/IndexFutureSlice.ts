@@ -29,7 +29,7 @@ export const getIFlist = createAsyncThunk(
   "/if/list",
   async ({ token }: { token: string }) => {
     return await baseService
-      .url(`${api}/if/list`)
+      .url(`${api}/index-future/chainlist`)
       .get()
       .json((response: any) => response);
   }
@@ -39,7 +39,7 @@ export const getIFWarrantslist = createAsyncThunk(
   "/if/warrants",
   async ({ token }: any) => {
     return await baseService
-      .url(`${api}/if/warrants`)
+      .url(`${api}/index-future/warrants`)
       .get()
       .json((response: any) => response);
   }
@@ -49,7 +49,7 @@ export const updateIF = createAsyncThunk(
   "/if/update",
   async ({ token, payload }: any) => {
     return await baseService
-      .url(`${api}/if`)
+      .url(`${api}/index-future`)
       .post({ ...payload })
       .json((response: any) => response)
       .catch((e: any) => {

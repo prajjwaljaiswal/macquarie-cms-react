@@ -42,15 +42,25 @@ const useStyles = makeStyles((theme) => ({
   cardLay: {
     padding: "1em",
   },
-  root: {
-    display: "flex",
-    flexWrap: "wrap",
-  },
+  // root: {
+  //   display: "flex",
+  //   flexWrap: "wrap",
+  // },
   isChecked: {
     backgroundColor: `${emphasize("rgb(220, 220, 220)", 0.08)}!important`,
+    margin: theme.spacing(1),
+    "&:hover, &:focus": {
+      backgroundColor: emphasize("rgb(220, 220, 220)", 0.08),
+    },
+    "&:active": {
+      backgroundColor: emphasize("rgb(220, 220, 220)", 0.18),
+    },
+    borderRadius: "0.5em",
+    fontColor: "white",
+    padding: "8px"
   },
   buttonContainer: {
-    margin: theme.spacing(1),
+    // margin: theme.spacing(1),
   },
   container: {
     margin: theme.spacing(1),
@@ -63,6 +73,7 @@ const useStyles = makeStyles((theme) => ({
     },
     borderRadius: "0.5em",
     fontColor: "white",
+    padding: "8px"
   },
   textField: {
     marginLeft: theme.spacing(1),
@@ -70,7 +81,7 @@ const useStyles = makeStyles((theme) => ({
     width: "25ch",
   },
   dataContainer: {
-    height: "500px",
+    // height: "500px",
   },
 }));
 
@@ -80,6 +91,7 @@ const PurpleCheckbox = withStyles({
     "&$checked": {
       color: "#1329a2",
     },
+    
   },
   checked: {},
 })((props: CheckboxProps) => <Checkbox color="default" {...props} />);
@@ -91,11 +103,10 @@ type IFList = {
 };
 
 type WarrantsList = {
-  wrnt_ric: string;
-  future_ric: string;
   future_dsply_name: string;
-  dsply_nmll: string;
+  future_ric: string;
   ticker: string;
+  wrnt_ric: string;
 };
 
 const itemsMap = {
@@ -118,7 +129,7 @@ type underlying = "HSI" | "HSTECH" | "SP500" | "SiMSCI" | "NIKKEI225";
 
 export default function IndexFuture() {
   const [data, setData] = useState<IFList[]>([]);
-  const [futureData, setFutureData] = useState<WarrantsList[]>([]);
+  const [futureData, setFutureData] = useState<any>([]);
   const [futureIndexData, setFutureIndexData] = useState<any>([]);
   const [selectedIndex, setSelectedIndex] = useState("");
   const [ric, setRic] = useState<string>("");
@@ -148,13 +159,15 @@ export default function IndexFuture() {
 
   useEffect(() => {
     if (isListSuccess) {
-      setData(IFlist);
-      setSelectedIndex(
-        `${IFlist[0]?.ric},${IFlist[0]?.dsply_name},${IFlist[0]?.underlying_ticker}`
-      );
-      setRic(IFlist[0]?.ric);
-      setDspName(IFlist[0]?.dsply_name);
-      setUndlyTkr(IFlist[0]?.underlying_ticker);
+      if(IFlist){
+        setData(IFlist);
+        setSelectedIndex(
+          `${IFlist[0]?.ric},${IFlist[0]?.dsply_name},${IFlist[0]?.underlying_ticker}`
+        );
+        setRic(IFlist[0]?.ric);
+        setDspName(IFlist[0]?.dsply_name);
+        setUndlyTkr(IFlist[0]?.underlying_ticker);
+      }
     }
 
     if (isListError) {
@@ -175,16 +188,21 @@ export default function IndexFuture() {
 
   useEffect(() => {
     if (isWarrantsSuccess) {
-      setFutureData(
-        IFWarrants.filter((data: WarrantsList) =>
-          data.dsply_nmll.includes(itemsMap2[undlyTkr])
-        )
+      if(IFWarrants){
+        IFWarrants.filter((data: any) =>{
+          data.wrnt_ric.includes(itemsMap2[undlyTkr])
+        }
+        
       );
-    }
+        setFutureData(
+          IFWarrants.filter((data: any) => 
+            data
+          )
+        );
 
     setFutureIndexData(
       IFWarrants.filter((data: WarrantsList) =>
-        data.dsply_nmll.includes(itemsMap2[undlyTkr])
+        data
       ).map((data: WarrantsList) => {
         if (ric === data.future_ric) {
           return data.wrnt_ric;
@@ -193,14 +211,20 @@ export default function IndexFuture() {
         }
       })
     );
-
+    }
     if (isWarrantsError) {
       toast.error("Unable to load Warrants");
+    }
     }
   }, [isWarrantsSuccess, isWarrantsError, IFWarrants, undlyTkr, ric]);
 
   useEffect(() => {
     dispatch(getIFWarrantslist({ token }));
+
+    if(isUpdateIFSuccess){
+      toast.success(`Index Future Updated`);
+      dispatch(clearState());
+    }
 
     if (isUpdateIFError) {
       toast.error(`Update failed`);
@@ -258,6 +282,7 @@ export default function IndexFuture() {
     });
     setFutureIndexData(newselected);
   };
+  
 
   return (
     <div className="index-future">
@@ -276,8 +301,8 @@ export default function IndexFuture() {
                 Please select a future contract from the drop down box.
               </Typography>
             </Grid>
-            <Grid item xs={6}>
-              <FormControl>
+            <Grid container item xs={6} spacing={3}>
+              <FormControl fullWidth>
                 <InputLabel id="demo-mutiple-name-label">
                   Index Future
                 </InputLabel>
@@ -302,31 +327,35 @@ export default function IndexFuture() {
                   ))}
                 </Select>
               </FormControl>
+              
             </Grid>
           </Grid>
 
-          <Grid item container xs={12} spacing={3} alignItems="center">
+          <Grid item container xs={12}>
             {futureData.map(
               (
-                { wrnt_ric, future_ric, future_dsply_name, dsply_nmll, ticker },
-                index
+                { future_ric, future_dsply_name, wrnt_ric, ticker }: any,
+                index: any
               ) => (
                 <Grid
                   item
-                  xs={5}
+                  // spacing={4}
+                  xs={3}
+                  container
                   key={index}
-                  className={`${classes.container} ${
-                    !!futureIndexData[index]
-                      ? classes.isChecked
-                      : classes.container
-                  }`}
+                 
                 >
-                  <FormControl>
+                  <FormControl >
                     <Controller
                       name="selectedWarrants"
                       control={control}
                       render={() => (
                         <FormControlLabel
+                        className={`${
+                          !!futureIndexData[index]
+                            ? classes.isChecked
+                            : classes.container
+                        }`}
                           control={
                             <PurpleCheckbox
                               onChange={() =>
@@ -335,8 +364,9 @@ export default function IndexFuture() {
                               checked={!!futureIndexData[index]}
                             />
                           }
+                          
                           key={index}
-                          label={`${dsply_nmll} (${ticker})`}
+                          label={`${wrnt_ric} (${ticker})`}
                         />
                       )}
                     />

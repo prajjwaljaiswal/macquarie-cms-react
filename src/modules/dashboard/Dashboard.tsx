@@ -39,12 +39,14 @@ import DailyMarketAnalysis from "./pages/DailyMarketAnalysis/DailyMarketAnalysis
 import DwSet50Tips from "./pages/DwSet50Tips/DwSet50Tips";
 import HotTopicReview from "./pages/HotTopicReview/HotTopicReview";
 import DwTipsBanner from "./pages/DwTipsBanner/DwTipsBanner";
+import DailySet50 from "./pages/DailySet50/DailySet50";
+import Activities from "./pages/Activities/Activities";
 
 export default function Dashboard() {
   return (
     <>
       <NavBar />
-      <Grid container>
+      <Grid container className="mainGrid">
         <SideBar />
         <Switch>
         <PrivateRoute
@@ -80,8 +82,18 @@ export default function Dashboard() {
           />
           <PrivateRoute
             exact
+            path="/th_cms/dashboard/daily-set50"
+            component={DailySet50}
+          />
+          <PrivateRoute
+            exact
             path="/th_cms/dashboard/dw-tips-banner"
             component={DwTipsBanner}
+          />
+          <PrivateRoute
+            exact
+            path="/th_cms/dashboard/activities"
+            component={Activities}
           />
           <PrivateRoute
             exact

@@ -610,7 +610,7 @@ export default function Newsletter() {
                     </FormControl>
                   </Grid>
 
-                  <Grid item xs={3}>
+                  {/* <Grid item xs={3}>
                     <Typography>Change Images:</Typography>
                   </Grid>
                   <Grid item xs={9}>
@@ -715,7 +715,7 @@ export default function Newsletter() {
                         )}
                       />
                     </FormControl>
-                  </Grid>
+                  </Grid> */}
 
                   <Grid item xs={3}>
                     <Button

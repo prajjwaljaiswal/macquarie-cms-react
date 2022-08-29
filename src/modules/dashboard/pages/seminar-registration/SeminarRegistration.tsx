@@ -131,12 +131,14 @@ export default function SeminarRegistration() {
 
   useEffect(() => {
     if (isListSuccess) {
-      setSearchdata(SeminarReglist);
-      setSeminarTableData(SeminarReglist);
-      if (SeminarReglist.length >= limit) {
-        setButton(false);
-      } else {
-        setButton(true);
+      if(SeminarReglist){
+        setSearchdata(SeminarReglist);
+        setSeminarTableData(SeminarReglist);
+        if (SeminarReglist.length >= limit) {
+          setButton(false);
+        } else {
+          setButton(true);
+        }
       }
     }
 

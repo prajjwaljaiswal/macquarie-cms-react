@@ -9,6 +9,7 @@ const useStyles = makeStyles((theme) => ({
   listItem: {
     padding: "5px",
     cursor: "pointer",
+    color: "black",
   },
 }));
 
@@ -55,15 +56,13 @@ export default function SideBar() {
               </ListItem>
             </Link>
 
-            <Link to="/th_cms/dashboard/fasttrack" className="link">
+            <Link to="/th_cms/dashboard/daily-set50" className="link">
               <ListItem
                 selected={selected === 2}
                 className={classes.listItem}
                 onClick={() => setSelected(2)}
               >
-                  <Typography style={{ color: "red" }}>
                     Daily Set50 by AECs 
-                  </Typography>
               </ListItem>
             </Link>
 
@@ -93,9 +92,7 @@ export default function SideBar() {
                 className={classes.listItem}
                 onClick={() => setSelected(5)}
               >
-                <Typography style={{ color: "red" }}>
                   Daily S&P500 DW update	
-                </Typography>
               </ListItem>
             </Link>
 
@@ -105,9 +102,7 @@ export default function SideBar() {
                 className={classes.listItem}
                 onClick={() => setSelected(6)}
               >
-                <Typography style={{ color: "red" }}>
                   Daily HSI DW update	
-                </Typography>
               </ListItem>
             </Link>
 
@@ -118,9 +113,7 @@ export default function SideBar() {
                 className={classes.listItem}
                 onClick={() => setSelected(7)}
               >
-                <Typography style={{ color: "red" }}>
                   Daily Single Stock update	
-                </Typography>
               </ListItem>
             </Link>
 
@@ -301,15 +294,13 @@ export default function SideBar() {
               </ListItem>
             </Link>
 
-            <Link to="/th_cms/dashboard/fasttrack" className="link">
+            <Link to="/th_cms/dashboard/activities" className="link">
               <ListItem
                 selected={selected === 20}
                 className={classes.listItem}
                 onClick={() => setSelected(20)}
               >
-                <Typography style={{ color: "red" }}>
                     Activities
-                </Typography>  
               </ListItem>
             </Link>
 

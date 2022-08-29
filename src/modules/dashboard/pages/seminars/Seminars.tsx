@@ -117,9 +117,6 @@ export default function Seminars() {
         time: "",
         title: "",
         venue: "",
-        partner: "",
-        webinar: false,
-        recorded: false,
         content: "",
         file: null,
       },
@@ -157,8 +154,10 @@ export default function Seminars() {
 
   useEffect(() => {
     if (isListSuccess) {
-      setSearchdata(Seminarlist);
-      setData(Seminarlist);
+      if(Seminarlist){
+        setSearchdata(Seminarlist);
+        setData(Seminarlist);
+      }
     }
 
     if (isListError) {
@@ -221,9 +220,6 @@ export default function Seminars() {
       setValue("time", Seminar.en_seminar_time);
       setValue("title", Seminar.en_title);
       setValue("venue", Seminar.en_venue);
-      setValue("partner", Seminar.en_partner);
-      setValue("webinar", Seminar.webinar === "1" ? true : false);
-      setValue("recorded", Seminar.recorded === "1" ? true : false);
       setValue("content", Seminar.en_introduce_content);
       editor?.setData(Seminar.en_introduce_content);
       setImage(`${api}/file/image/seminar/${Seminar.id}`);
@@ -260,12 +256,9 @@ export default function Seminars() {
           seminar_status: getValues("status") ? "Y" : "N",
           en_title: getValues("title"),
           en_venue: getValues("venue"),
-          en_partner: getValues("partner"),
           en_introduce_content: getValues("content"),
           en_poster: fileArrayBuffer ? fileArrayBuffer : null,
-          registration_link: getValues("link"),
-          webinar: getValues("webinar") ? "1" : "0",
-          recorded: getValues("recorded") ? "1" : "0",
+          registration_link: getValues("link")
         },
       })
     );
@@ -322,12 +315,9 @@ export default function Seminars() {
           seminar_status: getValues("status") ? "Y" : "N",
           en_title: getValues("title"),
           en_venue: getValues("venue"),
-          en_partner: getValues("partner"),
           en_introduce_content: getValues("content"),
           en_poster: fileArrayBuffer ? fileArrayBuffer : null,
           registration_link: getValues("link"),
-          webinar: getValues("webinar") ? "1" : "0",
-          recorded: getValues("recorded") ? "1" : "0",
         },
       })
     );
@@ -573,7 +563,7 @@ export default function Seminars() {
                     </FormControl>
                   </Grid>
 
-                  <Grid item xs={3}>
+                  {/* <Grid item xs={3}>
                     <Typography>Partner: </Typography>
                   </Grid>
                   <Grid item xs={9}>
@@ -594,7 +584,7 @@ export default function Seminars() {
                         }}
                       />
                     </FormControl>
-                  </Grid>
+                  </Grid> */}
                   <Grid item xs={3}>
                     <FormControl>
                       <Typography>Image:</Typography>
@@ -638,11 +628,11 @@ export default function Seminars() {
                     </FormControl>
                   </Grid>
 
-                  <Grid item xs={3}>
+                  {/* <Grid item xs={3}>
                     <Typography>Event is a webinar:</Typography>
-                  </Grid>
+                  </Grid> */}
 
-                  <Grid item xs={9}>
+                  {/* <Grid item xs={9}>
                     <FormControl fullWidth>
                       <Controller
                         name="webinar"
@@ -696,7 +686,7 @@ export default function Seminars() {
                         )}
                       />
                     </FormControl>
-                  </Grid>
+                  </Grid> */}
 
                   <Grid item xs={12}>
                     <FormControl fullWidth>

@@ -50,14 +50,29 @@ const initialState = {
   isDeleteDailyHsiDwSuccess: false,
   isDeleteDailyHsiDwError: false,
   deleteDailyHsiDwErrorMessage: "",
+
+  Watchlist: [],
+  isWatchlistFetching: false,
+  isWatchlistSuccess: false,
+  isWatchlistError: false
 };
 
 export const getDailyHsiDwlist = createAsyncThunk(
-  "/daily-sp-500",
+  "/daily-hsi-dw",
   async ({ token }: { token: string }) => {
     return await baseService
-      .url(`${api}/daily-sp-500`)
+      .url(`${api}/daily-hsi-dw`)
       .get()
+      .json((response: any) => response);
+  }
+);
+
+export const getWatchlist = createAsyncThunk(
+  "/watchlist",
+  async ({ token, payload }: { token: string, payload: any }) => {
+    return await baseService
+      .url(`${api}/watchlist`)
+      .post({ ...payload })
       .json((response: any) => response);
   }
 );
@@ -72,31 +87,42 @@ export const getDailyHsiDwSearch = createAsyncThunk(
   }
 );
 
+
+export const getDailyHsiDwNewly = createAsyncThunk(
+  "/power-search/symbol",
+  async ({ token, ric }: any) => {
+    return await baseService
+      .url(`${api}/power-search/symbol?ric=${ric}&type=n`)
+      .get()
+      .json((response: any) => response);
+  }
+);
+
 export const getDailyHsiDwById = createAsyncThunk(
   "/todays-top-picks/id",
   async ({ token, id }: any) => {
     return await baseService
-      .url(`${api}/daily-sp-500/${id}`)
+      .url(`${api}/daily-hsi-dw/${id}`)
       .get()
       .json((response: any) => response);
   }
 );
 
 export const updateDailyHsiDwImage: any = createAsyncThunk(
-  "/daily-sp-500/upload/id",
+  "/daily-hsi-dw/upload/id",
   async ({ token, id, newPayload }: any) => {
     return await baseService
-      .url(`${api}/daily-sp-500/upload/${id}`)
-      .post({...newPayload})
+      .url(`${api}/daily-hsi-dw/upload/${id}`)
+      .post({ ...newPayload })
       .json((response: any) => response);
   }
 );
 
 export const insertDailyHsiDw = createAsyncThunk(
-  "/daily-sp-500/post",
+  "/daily-hsi-dw/post",
   async ({ token, payload }: any) => {
     return await baseService
-      .url(`${api}/daily-sp-500`)
+      .url(`${api}/daily-hsi-dw`)
       .post({ ...payload })
       .json((response: any) => response)
       .catch((e: any) => {
@@ -106,14 +132,15 @@ export const insertDailyHsiDw = createAsyncThunk(
 );
 
 export const updateDailyHsiDw = createAsyncThunk(
-  "/daily-sp-500/update",
+  "/daily-hsi-dw/update",
   async ({ token, id, payload }: any) => {
     return await baseService
-      .url(`${api}/daily-sp-500/update`)
+      .url(`${api}/daily-hsi-dw/update`)
       .post({ ...payload })
-      .json((response: any) =>  {
+      .json((response: any) => {
         console.log(response);
-       return response;} )
+        return response;
+      })
       .catch((e: any) => {
         throw e;
       });
@@ -121,10 +148,10 @@ export const updateDailyHsiDw = createAsyncThunk(
 );
 
 export const deleteDailyHsiDw = createAsyncThunk(
-  "/daily-sp-500/delete",
+  "/daily-hsi-dw/delete",
   async ({ token, id }: any) => {
     return await baseService
-      .url(`${api}/daily-sp-500/delete/${id}`)
+      .url(`${api}/daily-hsi-dw/delete/${id}`)
       .post()
       .json((response: any) => response)
       .catch((e: any) => {
@@ -132,6 +159,12 @@ export const deleteDailyHsiDw = createAsyncThunk(
       });
   }
 );
+
+
+// Watchlist: [],
+// isWatchlistFetching: false,
+// isWatchlistSuccess: false,
+// isWatchlistError: false
 
 export const DailyHsiDwlistSlice: any = createSlice({
   name: "DailyHsiDwlist",
@@ -155,6 +188,24 @@ export const DailyHsiDwlistSlice: any = createSlice({
       state.isFetching = false;
       state.isSuccess = false;
       state.isError = true;
+      state.status = "Error";
+      state.errorMessage = action?.payload?.message;
+    }),
+    builder.addCase(getWatchlist.pending, (state, action) => {
+      state.isWatchlistFetching = true;
+      state.isWatchlistSuccess = false;
+      state.status = "Loading...";
+    }),
+    builder.addCase(getWatchlist.fulfilled, (state, action) => {
+      state.status = "Success";
+      state.isWatchlistFetching = false;
+      state.isWatchlistSuccess = true;
+      state.Watchlist = action.payload;
+    }),
+    builder.addCase(getWatchlist.rejected, (state, action: any) => {
+      state.isWatchlistFetching = false;
+      state.isWatchlistSuccess = false;
+      state.isWatchlistError = true;
       state.status = "Error";
       state.errorMessage = action?.payload?.message;
     }),

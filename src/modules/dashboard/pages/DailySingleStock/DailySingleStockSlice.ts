@@ -50,14 +50,29 @@ const initialState = {
   isDeleteDailySingleStockSuccess: false,
   isDeleteDailySingleStockError: false,
   deleteDailySingleStockErrorMessage: "",
+
+  Watchlist: [],
+  isWatchlistFetching: false,
+  isWatchlistSuccess: false,
+  isWatchlistError: false
 };
 
 export const getDailySingleStocklist = createAsyncThunk(
-  "/daily-sp-500",
+  "/daily-single-stock",
   async ({ token }: { token: string }) => {
     return await baseService
-      .url(`${api}/daily-sp-500`)
+      .url(`${api}/daily-single-stock`)
       .get()
+      .json((response: any) => response);
+  }
+);
+
+export const getWatchlist = createAsyncThunk(
+  "/watchlist",
+  async ({ token, payload }: { token: string, payload: any }) => {
+    return await baseService
+      .url(`${api}/watchlist`)
+      .post({ ...payload })
       .json((response: any) => response);
   }
 );
@@ -72,31 +87,42 @@ export const getDailySingleStockSearch = createAsyncThunk(
   }
 );
 
+
+export const getDailySingleStockNewly = createAsyncThunk(
+  "/power-search/symbol",
+  async ({ token, ric }: any) => {
+    return await baseService
+      .url(`${api}/power-search/symbol?ric=${ric}&type=n`)
+      .get()
+      .json((response: any) => response);
+  }
+);
+
 export const getDailySingleStockById = createAsyncThunk(
   "/todays-top-picks/id",
   async ({ token, id }: any) => {
     return await baseService
-      .url(`${api}/daily-sp-500/${id}`)
+      .url(`${api}/daily-single-stock/${id}`)
       .get()
       .json((response: any) => response);
   }
 );
 
 export const updateDailySingleStockImage: any = createAsyncThunk(
-  "/daily-sp-500/upload/id",
+  "/daily-single-stock/upload/id",
   async ({ token, id, newPayload }: any) => {
     return await baseService
-      .url(`${api}/daily-sp-500/upload/${id}`)
-      .post({...newPayload})
+      .url(`${api}/daily-single-stock/upload/${id}`)
+      .post({ ...newPayload })
       .json((response: any) => response);
   }
 );
 
 export const insertDailySingleStock = createAsyncThunk(
-  "/daily-sp-500/post",
+  "/daily-single-stock/post",
   async ({ token, payload }: any) => {
     return await baseService
-      .url(`${api}/daily-sp-500`)
+      .url(`${api}/daily-single-stock`)
       .post({ ...payload })
       .json((response: any) => response)
       .catch((e: any) => {
@@ -106,14 +132,15 @@ export const insertDailySingleStock = createAsyncThunk(
 );
 
 export const updateDailySingleStock = createAsyncThunk(
-  "/daily-sp-500/update",
+  "/daily-single-stock/update",
   async ({ token, id, payload }: any) => {
     return await baseService
-      .url(`${api}/daily-sp-500/update`)
+      .url(`${api}/daily-single-stock/update`)
       .post({ ...payload })
-      .json((response: any) =>  {
+      .json((response: any) => {
         console.log(response);
-       return response;} )
+        return response;
+      })
       .catch((e: any) => {
         throw e;
       });
@@ -121,10 +148,10 @@ export const updateDailySingleStock = createAsyncThunk(
 );
 
 export const deleteDailySingleStock = createAsyncThunk(
-  "/daily-sp-500/delete",
+  "/daily-single-stock/delete",
   async ({ token, id }: any) => {
     return await baseService
-      .url(`${api}/daily-sp-500/delete/${id}`)
+      .url(`${api}/daily-single-stock/delete/${id}`)
       .post()
       .json((response: any) => response)
       .catch((e: any) => {
@@ -132,6 +159,12 @@ export const deleteDailySingleStock = createAsyncThunk(
       });
   }
 );
+
+
+// Watchlist: [],
+// isWatchlistFetching: false,
+// isWatchlistSuccess: false,
+// isWatchlistError: false
 
 export const DailySingleStocklistSlice: any = createSlice({
   name: "DailySingleStocklist",
@@ -155,6 +188,24 @@ export const DailySingleStocklistSlice: any = createSlice({
       state.isFetching = false;
       state.isSuccess = false;
       state.isError = true;
+      state.status = "Error";
+      state.errorMessage = action?.payload?.message;
+    }),
+    builder.addCase(getWatchlist.pending, (state, action) => {
+      state.isWatchlistFetching = true;
+      state.isWatchlistSuccess = false;
+      state.status = "Loading...";
+    }),
+    builder.addCase(getWatchlist.fulfilled, (state, action) => {
+      state.status = "Success";
+      state.isWatchlistFetching = false;
+      state.isWatchlistSuccess = true;
+      state.Watchlist = action.payload;
+    }),
+    builder.addCase(getWatchlist.rejected, (state, action: any) => {
+      state.isWatchlistFetching = false;
+      state.isWatchlistSuccess = false;
+      state.isWatchlistError = true;
       state.status = "Error";
       state.errorMessage = action?.payload?.message;
     }),

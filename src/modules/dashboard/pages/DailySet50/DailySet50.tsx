@@ -17,19 +17,19 @@ import { DataGrid } from "@material-ui/data-grid";
 import { EditOutlined, DeleteOutline, CloudUpload } from "@material-ui/icons";
 import SearchBar from "material-ui-search-bar";
 import { useEffect, useState } from "react";
-import "./DailyHsiDw.css";
+import "./DailySet50.css";
 import {
-  getDailyHsiDwlist,
-  getDailyHsiDwById,
-  getDailyHsiDwSearch,
-  insertDailyHsiDw,
-  updateDailyHsiDw,
-  deleteDailyHsiDw,
-  DailyHsiDwlistSelector,
+  getDailySet50list,
+  getDailySet50ById,
+  getDailySet50Search,
+  insertDailySet50,
+  updateDailySet50,
+  deleteDailySet50,
+  DailySet50listSelector,
   clearState,
-  updateDailyHsiDwImage,
+  updateDailySet50Image,
   getWatchlist,
-} from "./DailyHsiDwSlice";
+} from "./DailySet50Slice";
 import { loginSelector } from "../../../login/loginSlice";
 import { useDispatch, useSelector } from "react-redux";
 import dayjs from "dayjs";
@@ -75,31 +75,31 @@ const useStyles = makeStyles((theme) => ({
 
 
 
-export default function DailyHsiDw() {
+export default function DailySet50() {
   const classes = useStyles();
   const dispatch = useDispatch();
   const { token } = useSelector(loginSelector);
   const {
-    DailyHsiDwlist,
-    DailyHsiDwDataSearch,
+    DailySet50list,
+    DailySet50DataSearch,
     isDataSearchSuccess,
     isSuccess,
-    isInsertDailyHsiDwSuccess,
-    isUpdateDailyHsiDwSuccess,
-    isDeleteDailyHsiDwSuccess,
+    isInsertDailySet50Success,
+    isUpdateDailySet50Success,
+    isDeleteDailySet50Success,
     isError,
-    isInsertDailyHsiDwError,
-    insertDailyHsiDwErrorMessage,
-    isUpdateDailyHsiDwError,
-    isDeleteDailyHsiDwError,
-    updateDailyHsiDwErrorMessage,
-    deleteDailyHsiDwErrorMessage,
+    isInsertDailySet50Error,
+    insertDailySet50ErrorMessage,
+    isUpdateDailySet50Error,
+    isDeleteDailySet50Error,
+    updateDailySet50ErrorMessage,
+    deleteDailySet50ErrorMessage,
     isDataSuccess,
     isDataError,
-    DailyHsiDwData,
+    DailySet50Data,
     Watchlist,
     isWatchlistSuccess
-  } = useSelector(DailyHsiDwlistSelector);
+  } = useSelector(DailySet50listSelector);
   const [searchdata, setSearchdata] = useState<any>([]);
   const [data, setData] = useState<any>([]);
   const [dwData, setDwData] = useState<any>([]);
@@ -130,7 +130,7 @@ export default function DailyHsiDw() {
         id: 0,
         title: "",
         thai_title: "",
-        daily_hsi_status: 1,
+        daily_highlight_status: 1,
         en_short_content: "",
         en_full_content: "",
         thai_short_content: "",
@@ -141,7 +141,7 @@ export default function DailyHsiDw() {
     });
 
   useEffect(() => {
-    dispatch(getDailyHsiDwlist({ token }));
+    dispatch(getDailySet50list({ token }));
 
     return () => {
       dispatch(clearState());
@@ -149,51 +149,51 @@ export default function DailyHsiDw() {
   }, []);
 
   useEffect(() => {
-    dispatch(getDailyHsiDwlist({ token }));
+    dispatch(getDailySet50list({ token }));
 
-    if (isInsertDailyHsiDwSuccess) {
+    if (isInsertDailySet50Success) {
       toast.success("Successfully saved.");
     }
 
-    if (isUpdateDailyHsiDwSuccess) {
+    if (isUpdateDailySet50Success) {
       toast.success("Successfully updated.");
     }
 
-    if (isDeleteDailyHsiDwSuccess) {
+    if (isDeleteDailySet50Success) {
       toast.success("Successfully deleted.");
     }
 
     dispatch(clearState());
-  }, [isInsertDailyHsiDwSuccess, isUpdateDailyHsiDwSuccess, isDeleteDailyHsiDwSuccess]);
+  }, [isInsertDailySet50Success, isUpdateDailySet50Success, isDeleteDailySet50Success]);
 
   useEffect(() => {
     if (isSuccess) {
-      setSearchdata(DailyHsiDwlist);
-      setData(DailyHsiDwlist);
+      setSearchdata(DailySet50list);
+      setData(DailySet50list);
     }
 
     if (isError) {
       toast.error(`Unable to load data list`);
       dispatch(clearState());
     }
-  }, [isSuccess, isError, DailyHsiDwlist]);
+  }, [isSuccess, isError, DailySet50list]);
 
   useEffect(() => {
     if (isDataSuccess) {
-      setValue("date", dayjs(DailyHsiDwData[0].publish_date).format("YYYY-MM-DD"));
-      setValue("title", DailyHsiDwData[0].en_title);
-      setValue("thai_title", DailyHsiDwData[0].thai_title);
-      setValue("id", DailyHsiDwData[0].id);
-      setValue("daily_hsi_status", DailyHsiDwData[0].daily_hsi_status);
-      setValue("en_short_content", (DailyHsiDwData[0].en_short_content) ? AllHtmlEntities.decode(DailyHsiDwData[0].en_short_content) : "");
-      sEditor?.setData((DailyHsiDwData[0].en_short_content) ? AllHtmlEntities.decode(DailyHsiDwData[0].en_short_content) : "");
-      setValue("en_full_content", AllHtmlEntities.decode(DailyHsiDwData[0].en_full_content));
-      fEditor?.setData(AllHtmlEntities.decode(DailyHsiDwData[0].en_full_content));
-      setValue("thai_short_content", AllHtmlEntities.decode(DailyHsiDwData[0].thai_short_content));
-      thaisEditor?.setData(AllHtmlEntities.decode(DailyHsiDwData[0].thai_short_content));
-      let h = AllHtmlEntities.decode(DailyHsiDwData[0].thai_full_content);
+      setValue("date", dayjs(DailySet50Data[0].publish_date).format("YYYY-MM-DD"));
+      setValue("title", DailySet50Data[0].en_title);
+      setValue("thai_title", DailySet50Data[0].thai_title);
+      setValue("id", DailySet50Data[0].id);
+      setValue("daily_highlight_status", DailySet50Data[0].daily_highlight_status);
+      setValue("en_short_content", (DailySet50Data[0].en_short_content) ? AllHtmlEntities.decode(DailySet50Data[0].en_short_content) : "");
+      sEditor?.setData((DailySet50Data[0].en_short_content) ? AllHtmlEntities.decode(DailySet50Data[0].en_short_content) : "");
+      setValue("en_full_content", AllHtmlEntities.decode(DailySet50Data[0].en_full_content));
+      fEditor?.setData(AllHtmlEntities.decode(DailySet50Data[0].en_full_content));
+      setValue("thai_short_content", AllHtmlEntities.decode(DailySet50Data[0].thai_short_content));
+      thaisEditor?.setData(AllHtmlEntities.decode(DailySet50Data[0].thai_short_content));
+      let h = AllHtmlEntities.decode(DailySet50Data[0].thai_full_content);
       let thai_full_str = "";
-      console.log(DailyHsiDwData[0], "full thai content");
+      console.log(DailySet50Data[0], "full thai content");
       if (h.indexOf("|") != -1) {
         let thai_full_str = h.split("|")[1].split("<br>").join("\n");
         thaifEditor?.setData(thai_full_str);
@@ -229,26 +229,26 @@ export default function DailyHsiDw() {
       toast.error(`Unable to retrieve data`);
       dispatch(clearState());
     }
-  }, [isDataSuccess, isDataError, DailyHsiDwData]);
+  }, [isDataSuccess, isDataError, DailySet50Data]);
 
   useEffect(() => {
-    if (isInsertDailyHsiDwError) {
+    if (isInsertDailySet50Error) {
       toast.error(`Save failed`);
       dispatch(clearState());
     }
-    if (isUpdateDailyHsiDwError) {
+    if (isUpdateDailySet50Error) {
       toast.error(`Update failed`);
       dispatch(clearState());
     }
-    if (isDeleteDailyHsiDwError) {
+    if (isDeleteDailySet50Error) {
       toast.error(`Delete failed`);
       dispatch(clearState());
     }
-  }, [isInsertDailyHsiDwError, isUpdateDailyHsiDwError, isDeleteDailyHsiDwError]);
+  }, [isInsertDailySet50Error, isUpdateDailySet50Error, isDeleteDailySet50Error]);
 
   const handleEdit = (id: number) => {
-    dispatch(getDailyHsiDwById({ token, id }));
-    setImage(`${api}/daily-hsi-dw/image/${id}`);
+    dispatch(getDailySet50ById({ token, id }));
+    setImage(`${api}/daily-set50-aecs/image/${id}`);
     setButton(false);
     setEditId(id);
     setArrayData([]);
@@ -256,10 +256,10 @@ export default function DailyHsiDw() {
 
   const handleSearch = (e: any) => {
     const ric: string = e.target.value;
-    dispatch(getDailyHsiDwSearch({ token, ric }));
+    dispatch(getDailySet50Search({ token, ric }));
     if (isDataSearchSuccess) {
-      console.log(DailyHsiDwDataSearch);
-      setSearchedSymbol(DailyHsiDwDataSearch);
+      console.log(DailySet50DataSearch);
+      setSearchedSymbol(DailySet50DataSearch);
     }
   }
 
@@ -284,7 +284,7 @@ export default function DailyHsiDw() {
   };
 
   const handleDelete = (id: number) => {
-    dispatch(deleteDailyHsiDw({ token, id }));
+    dispatch(deleteDailySet50({ token, id }));
     reset();
     sEditor.setData();
     fEditor.setData();
@@ -312,7 +312,7 @@ export default function DailyHsiDw() {
     requestSearch(searched);
   };
 
-  const submitDailyHsiDw = (e: any) => {
+  const submitDailySet50 = (e: any) => {
     let thai_full_content = e.thai_full_content;
     if (e.title) {
       let ric = "";
@@ -324,11 +324,11 @@ export default function DailyHsiDw() {
       thai_full_content = `${ricSliced}|${thai_full_content}`;
 
       dispatch(
-        insertDailyHsiDw({
+        insertDailySet50({
           token,
           payload: {
             publish_date: e.date,
-            daily_hsi_status: 1,
+            daily_highlight_status: 1,
             en_title: e.title,
             thai_title: e.thai_title,
             en_short_content: AllHtmlEntities.encode(e.en_short_content),
@@ -368,13 +368,13 @@ export default function DailyHsiDw() {
       console.log(thai_full_content);
 
       dispatch(
-        updateDailyHsiDw({
+        updateDailySet50({
           token,
           id: editId,
           payload: {
             id: getValues("id"),
             publish_date: getValues("date"),
-            daily_hsi_status: 1,
+            daily_highlight_status: 1,
             en_title: getValues("title"),
             thai_title: getValues("thai_title"),
             en_short_content: AllHtmlEntities.encode(getValues("en_short_content")),
@@ -391,7 +391,7 @@ export default function DailyHsiDw() {
           id: id,
           image: fileArrayBuffer
         }
-        dispatch(updateDailyHsiDwImage({ token, id, newPayload }));
+        dispatch(updateDailySet50Image({ token, id, newPayload }));
       }
 
       reset();
@@ -575,7 +575,7 @@ export default function DailyHsiDw() {
           <Grid container spacing={4}>
             <Grid container item xs={12} spacing={3}>
               <Grid item xs={12}>
-                <h2>Daily HSI DW update</h2>
+                <h2>Daily SET50 by AECs</h2>
               </Grid>
             </Grid>
             <Grid container item xs={12} spacing={5}>
@@ -583,7 +583,7 @@ export default function DailyHsiDw() {
                 <form
                   className={classes.form}
                   noValidate
-                  onSubmit={handleSubmit(submitDailyHsiDw)}
+                  onSubmit={handleSubmit(submitDailySet50)}
                 >
                   <Grid item container xs={12} spacing={3}>
                     <Grid item xs={3}>

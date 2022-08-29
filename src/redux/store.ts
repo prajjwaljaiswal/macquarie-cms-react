@@ -20,7 +20,6 @@ import fasttrackSlice from "../modules/dashboard/pages/fast-track/fasttrackSlice
 import DailySp500Slice from "../modules/dashboard/pages/DailySp500/DailySp500Slice";
 import MarketCommentarySlice from "../modules/dashboard/pages/market-commentary/MarketCommentarySlice";
 import DailyHsiDwSlice from "../modules/dashboard/pages/DailyHsiDw/DailyHsiDwSlice";
-import DailySingleStockSlice from "../modules/dashboard/pages/DailySingleStock/DailySingleStockSlice";
 import AllForeignIndexSlice from "../modules/dashboard/pages/AllForeignIndex/AllForeignIndexSlice";
 import cautionSlice from "../modules/dashboard/pages/caution-list/cautionSlice";
 import Dw28UpdateSlice from "../modules/dashboard/pages/Dw28Update/Dw28UpdateSlice";
@@ -29,6 +28,9 @@ import DailyMarketAnalysisSlice from "../modules/dashboard/pages/DailyMarketAnal
 import DwSet50TipsSlice from "../modules/dashboard/pages/DwSet50Tips/DwSet50TipsSlice";
 import HotTopicReviewSlice from "../modules/dashboard/pages/HotTopicReview/HotTopicReviewSlice";
 import DwTipsBannerSlice from "../modules/dashboard/pages/DwTipsBanner/DwTipsBannerSlice";
+import DailySet50Slice from "../modules/dashboard/pages/DailySet50/DailySet50Slice";
+import DailySingleStockSlice from "../modules/dashboard/pages/DailySingleStock/DailySingleStockSlice";
+import ActivitiesSlice from "../modules/dashboard/pages/Activities/ActivitiesSlice";
 
 const initState = {
   reducer: {
@@ -54,14 +56,16 @@ const initState = {
     DailySp500list: DailySp500Slice,
     MarketCommentarylist: MarketCommentarySlice,
     DailyHsiDwlist: DailyHsiDwSlice,
-    DailySingleStocklist: DailySingleStockSlice,
     AllForeignIndexlist: AllForeignIndexSlice,
     Dw28Updatelist: Dw28UpdateSlice,
     DwInventorylist: DwInventorySlice,
     DailyMarketAnalysislist: DailyMarketAnalysisSlice,
     DwSet50Tipslist: DwSet50TipsSlice,
     HotTopicReviewlist: HotTopicReviewSlice,
-    DwTipsBannerlist: DwTipsBannerSlice
+    DwTipsBannerlist: DwTipsBannerSlice,
+    DailySet50list: DailySet50Slice,
+    DailySingleStocklist: DailySingleStockSlice,
+    Activitieslist: ActivitiesSlice
   },
 };
 const store = configureStore(initState);
